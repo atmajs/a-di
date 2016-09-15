@@ -1,0 +1,62 @@
+var Di = require('../src/Di');
+var di = null;
+
+class IFoo {}
+class Foo {}
+class Bar {
+	constructor (foo) {
+		this.foo = foo;
+	} 
+}
+class Qux {
+	constructor (options) {
+		this.bar = options.bar;
+		this.test = options.test;
+	}	
+}
+
+UTest({
+	$before () {
+		di = new Di;
+	},
+	'should resolve dependency' () {
+		
+		di.registerType(Foo).as(IFoo);
+
+		var foo = di.resolve(IFoo);
+		is_(foo, Foo);
+	},
+	'should inject dependency' () {		
+		di
+			.registerType(Bar)
+			.using(IFoo)
+			.asSelf();
+
+		var bar = di.resolve(Bar);
+		is_(bar, Bar);
+		is_(bar.foo, Foo);
+	},
+
+	'should inject dependencies into a method' () {
+		var fn = di.wrapFunction(IFoo, Bar, assert.await(function(foo, bar){
+			is_(foo, Foo);
+			is_(bar, Bar);
+			is_(bar.foo, Foo);
+		}))
+
+		fn();
+	},
+	'should inject arguments property' () {
+		di
+			.registerType(Qux)
+			.using({ bar: Bar })
+			.asSelf();
+
+
+		var WrappedQux = di.getType(Qux);
+		var qux = new WrappedQux({ test: 1});
+		eq_(qux.test, 1);
+		is_(qux.bar, Bar);
+		is_(qux.bar.foo, Foo); 
+	}
+})
