@@ -19,9 +19,10 @@ UTest({
 	$before () {
 		di = new Di;
 	},
-	'should resolve dependency' () {
-		
-		di.registerType(Foo).as(IFoo);
+	'should resolve dependency' () {		
+		di
+			.registerType(Foo)
+			.as(IFoo);
 
 		var foo = di.resolve(IFoo);
 		is_(foo, Foo);
@@ -36,7 +37,6 @@ UTest({
 		is_(bar, Bar);
 		is_(bar.foo, Foo);
 	},
-
 	'should inject dependencies into a method' () {
 		var fn = di.wrapFunction(IFoo, Bar, assert.await(function(foo, bar){
 			is_(foo, Foo);

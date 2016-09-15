@@ -7,12 +7,12 @@ module.exports = class TypeEntry extends Entry {
 	}
 
 	resolve () {
-		logger.log('TypeEntry', arguments)
 		var arr = this.resolvers,
 			i = arr.length,
 			params = new Array(i);
 		while(--i > -1) {
-			params[i] = this.resolvers[i]();
+			var arg = arguments.length > i ? arguments[i] : void 0;
+			params[i] = this.resolvers[i](arg);
 		}	
 		return new this.Type(...params);
 	}
