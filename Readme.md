@@ -1,6 +1,10 @@
+<p align='center'>
+    <img src='assets/logo.png'/>
+</p>
+
 # Yet another Dependency Injection Library for JavaScript
 
-_Highly inspired by [Autofac](https://autofac.org/)_
+_Highly inspired by [Autofac.NET](https://autofac.org/)_
 
 > We have tried to accommodate all the best DI and IoC  practices for JavaScript
 
