@@ -16,47 +16,108 @@ class Qux {
 }
 
 UTest({
-	$before () {
-		di = new Di;
-	},
-	'should resolve dependency' () {		
-		di
-			.registerType(Foo)
-			.as(IFoo);
+	'should test Types with dependencies in `using`': {
+		$before () {
+			di = new Di;
+		},
+		'should resolve dependency' () {		
+			di
+				.registerType(Foo)
+				.as(IFoo);
 
-		var foo = di.resolve(IFoo);
-		is_(foo, Foo);
-	},
-	'should inject dependency' () {		
-		di
-			.registerType(Bar)
-			.using(IFoo)
-			.asSelf();
-
-		var bar = di.resolve(Bar);
-		is_(bar, Bar);
-		is_(bar.foo, Foo);
-	},
-	'should inject dependencies into a method' () {
-		var fn = di.wrapFunction(IFoo, Bar, assert.await(function(foo, bar){
+			var foo = di.resolve(IFoo);
 			is_(foo, Foo);
+		},
+		'should inject dependency' () {		
+			di
+				.registerType(Bar)
+				.using(IFoo)
+				.asSelf();
+
+			var bar = di.resolve(Bar);
 			is_(bar, Bar);
 			is_(bar.foo, Foo);
-		}))
+		},
+		'should inject dependencies into a method' () {
+			var fn = di
+				.Function(assert.await(function(foo, bar){
+					is_(foo, Foo);
+					is_(bar, Bar);
+					is_(bar.foo, Foo);
+				}))
+				.using(IFoo, Bar)
+				.wrap();
 
-		fn();
+			fn();
+		},
+		'should inject arguments property' () {
+			di
+				.registerType(Qux)
+				.using({ bar: Bar })
+				.asSelf();
+
+			var WrappedQux = di.wrapType(Qux);
+			var qux = new WrappedQux({ test: 1});
+			eq_(qux.test, 1);
+			is_(qux.bar, Bar);
+			is_(qux.bar.foo, Foo); 
+		},
+		'should instantiate not registered type' () {
+			class Test {
+				constructor (bar) {
+					this.bar = bar;
+				}
+			}
+			var test = di
+				.Type(Test)
+				.using(Bar)
+				.resolve();
+
+			is_(test.bar, Bar);
+			is_(test.bar.foo, Foo);				
+		}
+		
 	},
-	'should inject arguments property' () {
-		di
-			.registerType(Qux)
-			.using({ bar: Bar })
-			.asSelf();
+	'should test Types with dependencies in meta declaration': {
+		$before () {
+			di = new Di;
+		},
+		
+		'should inject dependency' () {
+			class Foo {}
+			class Bar {
+				constructor (foo) {
+					this.foo = foo;
+				}
+				static get $constructor() {
+					return [Foo]
+				}
+			};
+			di.registerType(Foo).asSelf();		
+			di.registerType(Bar).asSelf();
 
+			var bar = di.resolve(Bar);
+			is_(bar, Bar);
+			is_(bar.foo, Foo);
+		},
+		'should instantiate not registered type' () {
+			class Qux {}
+			class Test {
+				constructor (qux) {
+					this.qux = qux;
+				}
+				static get $constructor () {
+					return [Qux];
+				}
+			}
 
-		var WrappedQux = di.getType(Qux);
-		var qux = new WrappedQux({ test: 1});
-		eq_(qux.test, 1);
-		is_(qux.bar, Bar);
-		is_(qux.bar.foo, Foo); 
+			di.registerType(Qux).asSelf();
+
+			var test = di
+				.Type(Test)
+				.resolve();
+
+			is_(test.qux, Qux);			
+		}
 	}
 })

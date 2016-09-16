@@ -19,7 +19,6 @@ module.exports = class PropertyResolver {
 		for (var key in mix) {
 			out[key] = mix[key];
 		}
-		logger.log('MIX'.red.bold, mix, out);
 		return out;
 	}
 }

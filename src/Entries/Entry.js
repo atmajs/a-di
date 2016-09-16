@@ -1,3 +1,5 @@
+var ParamResolver = require('../Params/ParamResolver');
+
 module.exports = class Entry {
 	
 	constructor (container) {
@@ -5,19 +7,22 @@ module.exports = class Entry {
 		this._as = [];
 		this._using = [];
 		this.onActivated = null;
-		this.resolver = this.resolve.bind(this);
+		//this.resolver = this.resolve.bind(this);
 		this.resolvers = [];
 	}
 
 	using (...args) {
 		this._using.push(...args);
 
-		var resolvers = this
-			.container
-			.entries
-			.getResolvers(...args);
 
-		this.resolvers.push(...resolvers);		
+		var resolvers = new Array(args.length),
+			imax = args.length,
+			i = -1;
+		while( ++i < imax ) {
+			resolvers[i] = ParamResolver.create(this.container, args[i]);
+		}
+
+		this.resolvers.push(...resolvers);	
 		return this;
 	}
 
@@ -29,6 +34,10 @@ module.exports = class Entry {
 			entries.registerFor(args[i], this);			
 		}
 		return this;
+	}
+
+	register () {
+		throw new Error('Not implemented');
 	}
 
 	asSelf () {

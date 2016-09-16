@@ -1,5 +1,4 @@
-var PropertyResolver = require('./PropertyResolver')
-var is = require('./utils/is');
+var is = require('../utils/is');
 
 module.exports = class EntryCollection {
 	constructor () {
@@ -25,7 +24,7 @@ module.exports = class EntryCollection {
 		}	
 		return entry.resolve();
 	}
-
+/*
 	getResolvers(...args) {
 		var out = new Array(args.length),
 			i = args.length;
@@ -72,7 +71,7 @@ module.exports = class EntryCollection {
 			params[i] = this.resolvers[i]();
 		}
 	}
-
+*/
 	getByType (Type) {
 		var arr = this.arr,
 			imax = arr.length,
@@ -113,6 +112,19 @@ module.exports = class EntryCollection {
 		}
 		return null;
 	}
+	removeForType(Type) {
+		var arr = this.types,
+			imax = arr.length,
+			i = -1;
+		while(++i < imax) {
+			var x = arr[i];
+			if (x.Type === Type) {
+				arr.splice(i, 1);
+				return;
+			}
+		}
+		return;
+	}	
 
 	registerFor (mix, entry) {
 		if (typeof mix === 'string') {
