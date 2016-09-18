@@ -75,6 +75,27 @@ UTest({
 
 			is_(test.bar, Bar);
 			is_(test.bar.foo, Foo);				
+		},
+		'should pre-define parameter' () {
+			class Test {
+				constructor (bar, myNumber) {
+					this.bar = bar;
+					this.num = myNumber;
+				}
+			}
+			var entry = di
+				.Type(Test)
+				.using(Bar)
+				.withParams(null, 10);
+				
+			var a = entry.resolve();
+			is_(a.bar, Bar);
+			eq_(a.num, 10);
+
+			'> should override parameter'
+			var b = entry.resolve(null, 11);
+			is_(b.bar, Bar);
+			eq_(b.num, 11);
 		}
 		
 	},

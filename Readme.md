@@ -2,6 +2,18 @@
     <img src='assets/logo.png'/>
 </p>
 
+<p align="center">
+    <a href='https://travis-ci.org/tenbits/di' target='_blank'>
+        <img src='https://travis-ci.org/tenbits/di.png?branch=master' />
+        </a>
+    <a href='http://badge.fury.io/js/di' target='_blank'>
+        <img src='https://badge.fury.io/js/di.svg' />
+        </a>
+    <a href='http://badge.fury.io/bo/di' target='_blank'>
+        <img src='https://badge.fury.io/bo/di.svg' />
+        </a>
+</p>
+
 # Yet another Dependency Injection Library for JavaScript
 
 _Highly inspired by [Autofac.NET](https://autofac.org/)_
@@ -18,8 +30,8 @@ _Highly inspired by [Autofac.NET](https://autofac.org/)_
     - `1.3` [Factory](#12-factory)
 - `2` [Dependency definitions](#2-dependency-defintions)
     - `2.1` [Constructor](#21-constructor)
-        - `2.1.1` [`DiEntry::using`](#211-dientry-using)
-        - `2.1.2` [Meta info reader](#212-meta-info-reader)
+        - `2.1.1` [External definitions](#211-external-definitions)
+        - `2.1.2` [In-place meta information](#212-inplace-meta-information)
         - `2.1.3` [_Other ways_](#213-other-ways)
     - `2.2` [Properties](#22-properties)
     - `2.3` [Methods](#23-methods)
@@ -27,6 +39,8 @@ _Highly inspired by [Autofac.NET](https://autofac.org/)_
     - `3.1` [Initialize registered components](#31-Initialize-registered-components)
     - `3.2` [Create inherited classes](#32-create-inherited-classes)
     - `3.3` [Create function delegates](#33-create function delegates)
+
+- `4` [Addition configuration](#3-additional-configuration)
 
 
 # `1` Registration
@@ -48,7 +62,7 @@ class Foo {
 di
 	.registerType(Foo)
     .using(IBar, IQux)
-	.as(IFoo)
+    .as(IFoo)
 	.as('foo')
     .asSelf()
 	.onActivated(foo => console.log(foo));
@@ -86,12 +100,11 @@ di.registerFactory(di => {}).as(IFoo);
 
 _Under `Constructor` also plain Functions are meant._
 
-#### `2.1.1` `DiEntry::using`
+#### `2.1.1` External definitions
 
-From the previous paragraph you have already seen the `using` method, when registering the `Type`. Here we say the library what are the identifiers for the arguments of the component.
+From the previous paragraph you have already seen `using` method, when registering the `Type`. Here we say the di library what identifiers should be used to instantiate the arguments.
 
-
-> **Pros**: Your implementation is fully decoupled from the DI and the registration.
+> :sparkles: **Pros**: Your implementation is fully decoupled from the DI and the registration iteself.
 
 ```javascript
 class Foo {
@@ -113,9 +126,9 @@ di
     .asSelf();
 ```
 
-#### `2.1.2` Meta Info reader
+#### `2.1.2` In-place meta information
 
-> **Pros**: Your implementation is decoupled from the DI, but holds meta information for the DI library.
+> :sparkles: **Pros**: Your implementation is decoupled from the DI, but holds meta information for the DI library.
 
 Per default we read the static `$inject` property on the `Type`
 
@@ -149,7 +162,7 @@ Foo.$inject = [ILog];
 
 #### `2.1.3` _Other ways_
 
-Under the considiration are some other ways, like decorators from ES7, but it makes then your `class` implementation to depend from `di` library and its decorator. 
+Under the considiration are some other ways, like decorators from ES7, but it makes then your `class` implementation to depend on `di` library and its decorator. 
 
 :bulb: Do you have any ideas? Please share them via issues.
 
@@ -161,7 +174,7 @@ Under the considiration are some other ways, like decorators from ES7, but it ma
 
 Property injections are supported by `Type`_s_ components.
 
-#### `2.2.1` `DiEntry::using`
+#### `2.2.1` External definitions
 
 ```javascript
 class Foo {
@@ -182,7 +195,7 @@ di
     .asSelf();
 ```
 
-#### `2.2.2` Property meta info reader
+#### `2.2.2` In-place meta information
 
 Per default we read the static `$properties` to get the `key: Identifier` information.
 
@@ -223,7 +236,7 @@ di.defineMetaReader(CustomMetaReader);
 
 Injections into `Type`_s_functions.
 
-#### `2.3.1` `DiEntry::using`
+#### `2.3.1` External definitions
 
 ```javascript
 class Foo {
@@ -241,7 +254,7 @@ di
     .asSelf();
 ```
 
-#### `2.3.2` Method meta info reader
+#### `2.3.2` In-place meta information
 
 Per default we read the static `$methods` with `key:[Identifier, ...]` information.
 
@@ -303,6 +316,38 @@ Define function argument identifiers, and you can call the function without argu
 var myFunction = di.wrapFunction(IFoo, IBar, (foo, bar) => {});
 myFunction();
 ```
+
+---
+
+# `4` Additional configuration
+
+### `4.1` Predefine parameter values
+
+Sometimes it is needed to set values for parameters, which will be directly passed inside the function.
+
+```javascript
+class Foo {
+    constructor (bar, shouldDoSmth)
+}
+di
+    .registerType(Foo)
+    .using(Bar)
+    .withParams(null, true)
+```
+
+> :one: Passing null values says the di library to resolve values from container by declared Type
+
+> :two: Boolean `true` from sample just shows the idea of passing values. You may want to get the value from app configuration or some other source.  
+
+### `4.2` Configurate arguments
+
+Arguments _or values_ for a constructor/function are resolved from 3 sources:
+- Declared parameter values
+- Type definitions
+- Direct values from the current function call.
+
+With options `"ignore" "extend" "override"` you can control how we handle the third source. Default is `"override"`
+
 
 
 :checkered_flag:

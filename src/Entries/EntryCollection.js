@@ -4,7 +4,7 @@ module.exports = class EntryCollection {
 	constructor () {
 		this.arr = [];
 		this.ids = {};
-		this.types = [];
+		this.types = {};
 	}
 
 	add (entry) {
@@ -24,54 +24,7 @@ module.exports = class EntryCollection {
 		}	
 		return entry.resolve();
 	}
-/*
-	getResolvers(...args) {
-		var out = new Array(args.length),
-			i = args.length;
-		while( --i > -1) {
-			out[i] = this.getResolver(args[i]);
-		}
-		return out;
-	}
 
-	getResolver (mix) {
-		if (is.Object(mix)) {
-			logger.log('RES'.cyan)
-			return new PropertyResolver(mix, this).resolver;
-		}
-		return this.getFor(mix, true).resolver;
-	}
-
-	invokeResolvers (resolvers, overrides) {
-		var resolversCount = resolvers.length,
-			overridesCount = overrides.length,
-			paramsCount = resolversCount > overridesCount
-				? resolversCount
-				: overridesCount;
-
-		var params = new Array(paramsCount);
-		var i = -1;
-		while( ++i < resolversCount ){
-			if (i < overridesCount && overridesCount[i] != null) {
-				params[i] = overridesCount[i];
-				continue;
-			}
-			params[i] = resolvers[i]();
-		}
-		i--;
-		while(++i < overridesCount) {
-			params[i] = overridesCount[i];
-		}
-
-		var arr = this.resolvers,
-			i = arr.length,
-			params = new Array(i);
-		
-		while(--i > -1) {
-			params[i] = this.resolvers[i]();
-		}
-	}
-*/
 	getByType (Type) {
 		var arr = this.arr,
 			imax = arr.length,
@@ -102,8 +55,12 @@ module.exports = class EntryCollection {
 		throw new Error('Collection::getFor. Unsupported value type: ' + (typeof mix));
 	}
 	getForType (Type) {
-		var arr = this.types,
-			imax = arr.length,
+		var name = Type.name,			
+			arr = this.types[name];
+		if (arr == null) {
+			return null;
+		}
+		var imax = arr.length,
 			i = -1;
 		while(++i < imax) {
 			var x = arr[i];
@@ -126,13 +83,39 @@ module.exports = class EntryCollection {
 		return;
 	}	
 
+	removeFor (mix) {
+		if (typeof mix === 'string') {
+			this.ids[mix] = null;
+			return;
+		}
+		if (typeof mix === 'function') {
+			var name = mix.name;
+			var arr = this.types[name];
+			if (arr == null) {
+				return;
+			}
+			var i = arr.length;
+			while(--i !== -1) {
+				if (arr[i].Type === mix) {
+					arr.splice(i, 1);
+				}
+			}
+			return;
+		}
+	}
+
 	registerFor (mix, entry) {
 		if (typeof mix === 'string') {
 			this.ids[mix] = entry;
 			return;
 		}
 		if (typeof mix === 'function') {
-			this.types.push({
+			var name = mix.name;
+			var arr = this.types[name];
+			if (arr == null) {
+				arr = this.types[name] = [];
+			}
+			arr.push({
 				Type: mix,
 				entry: entry
 			});

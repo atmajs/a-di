@@ -17,6 +17,7 @@ module.exports = class ObjectEntry extends Entry {
 		}
 	}
 
+	
 	resolve (currentObject) {
 		var object = Object.create(this.Object);
 		var arr = this.resolvers,

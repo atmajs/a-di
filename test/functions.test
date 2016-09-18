@@ -41,7 +41,6 @@ UTest({
 		fn();
 	},
 
-
 	'should override arguments' () {
 		var one = {}, two = {};
 		var fn = di

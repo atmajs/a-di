@@ -38,40 +38,6 @@ module.exports = class Di {
 	wrapType (Type) {
 		return this.entries.getFor(Type).wrap();
 	}
-
-	/*
-	wrapFunction (...args) {
-		var fn = args.pop();
-		if (typeof Type !== 'function') {
-			throw new Error('Invalid argument. Function expected.');
-		}
-		
-		var resolvers = this.entries.getResolvers(...args);
-		var resolversCount = resolvers.length;
-		
-		return function(...overrides) {
-			var overridesCount = overrides.length,
-				paramsCount = resolversCount > overridesCount
-				? resolversCount
-				: overridesCount;
-
-			var params = new Array(paramsCount);
-			var i = -1;
-			while( ++i < resolversCount ){
-				if (i < overridesCount && overridesCount[i] != null) {
-					params[i] = overridesCount[i];
-					continue;
-				}
-				params[i] = resolvers[i]();
-			}
-			i--;
-			while(++i < overridesCount) {
-				params[i] = overridesCount[i];
-			}
-
-			return fn.call(this, ...params);
-		}
-	}
-	*/
+	
 }
 

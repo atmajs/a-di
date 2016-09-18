@@ -1,0 +1,40 @@
+{
+  "name": "di-js",
+  "version": "1.0.0",
+  "description": "Dependency injection library for Javascript",
+  "main": "lib/di.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "atma test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tenbits/di.git"
+  },
+  "keywords": [
+    "di",
+    "dependency",
+    "injection",
+    "IoC"
+  ],
+  "author": "Alex Kit (alex.kit@atmajs.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tenbits/di/issues"
+  },
+  "homepage": "https://github.com/tenbits/di#readme",
+  "devDependencies": {
+    "app-bundler": "0.0.1",
+    "atma-loader-babel": "^1.0.21"
+  },
+  "app-bundler": {
+    "file": "src/Di.js",
+    "outputMain": "lib/di.js",
+    "module": "commonjs",
+    "middlewares": {
+      "js": "atma-loader-babel:read"
+    }
+  }
+}

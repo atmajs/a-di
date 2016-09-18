@@ -1,14 +1,28 @@
 var ParamResolver = require('../Params/ParamResolver');
+var opts = require('../const');
 
 module.exports = class Entry {
 	
-	constructor (container) {
-		this.container = container;
+	constructor (di) {
+		this.di = di;
+
 		this._as = [];
 		this._using = [];
+		this._params = [];
+		this._resolvers = [];
+
+		this.cfg_arguments = opts.args.OVERRIDE;
+
 		this.onActivated = null;
-		//this.resolver = this.resolve.bind(this);
-		this.resolvers = [];
+	}
+
+	config (key, value) {
+		var prop = 'cfg_' + key;
+		if (this[prop] === void 0) {
+			throw new Error('Configuration key is not supported: ' + key);
+		}
+		this[prop] = value;
+		return this;
 	}
 
 	using (...args) {
@@ -19,17 +33,17 @@ module.exports = class Entry {
 			imax = args.length,
 			i = -1;
 		while( ++i < imax ) {
-			resolvers[i] = ParamResolver.create(this.container, args[i]);
+			resolvers[i] = ParamResolver.create(this.di, args[i]);
 		}
 
-		this.resolvers.push(...resolvers);	
+		this._resolvers.push(...resolvers);	
 		return this;
 	}
 
 	as (...args) {
 		this._as.push(...args);
 
-		var i = args.length, entries = this.container.entries;
+		var i = args.length, entries = this.di.entries;
 		while(--i > -1) {
 			entries.registerFor(args[i], this);			
 		}
@@ -37,11 +51,15 @@ module.exports = class Entry {
 	}
 
 	register () {
-		throw new Error('Not implemented');
+		var coll = this.di.entries;
+		coll.removeFor(this.Entry);
+		coll.add(this);
+		return this;
 	}
 
 	asSelf () {
-		throw new Error('Not implemented');
+		this.di.entries.registerFor(this.Entry, this);
+		return this;
 	}
 
 	resolve () {
@@ -50,5 +68,9 @@ module.exports = class Entry {
 
 	onActivated (fn) {
 		this.onActivated = fn;
+	}
+
+	get Entry () {
+		throw new Error('Not implemented')
 	}
 }
