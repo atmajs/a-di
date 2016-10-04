@@ -1,14 +1,14 @@
 var BaseParamResolver = require('./BaseParamResolver');
-var is = require('../utils/is');
 
-module.exports = class ObjectParamResolvers {
+module.exports = class_create({
+	
 	constructor (di, object) {
 		this.object = object;
 		this.entries = di.entries;
-	}
+	},
 
 	resolve (currentParam) {
-		if (currentParam !== null && is.Object(currentParam) === false) {
+		if (currentParam !== null && is_Object(currentParam) === false) {
 			throw new Error('Object is expected to extend the resultig one')
 		}
 
@@ -21,4 +21,4 @@ module.exports = class ObjectParamResolvers {
 		}		
 		return out;
 	}
-}
+})

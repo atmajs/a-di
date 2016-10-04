@@ -1,11 +1,11 @@
 var Entry = require('./Entry');
 var ParamResolver = require('../Params/ParamResolver');
 
-module.exports = class ObjectEntry extends Entry {
+module.exports = class_create(Entry, {
+	
 	constructor (container, object) {	
-		super(...arguments);
 		this.Object = object;
-	}
+	},
 
 	using (objectDefinitions) {
 		if (arguments.length !== 1) {
@@ -15,8 +15,7 @@ module.exports = class ObjectEntry extends Entry {
 			var paramResolver =  ParamResolver.create(container, objectDefinitions[key]);
 			this.resolvers.push([key, paramResolver]);
 		}
-	}
-
+	},
 	
 	resolve (currentObject) {
 		var object = Object.create(this.Object);
@@ -38,10 +37,10 @@ module.exports = class ObjectEntry extends Entry {
 			}
 		}
 		return object;
-	}
+	},
 
 	wrap () {
 		return this.resolve.bind(this);
 	}
 
-}
+});

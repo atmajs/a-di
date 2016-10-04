@@ -1,15 +1,13 @@
-var is = require('../utils/is');
-
-module.exports = class EntryCollection {
+module.exports = class_create({
 	constructor () {
 		this.arr = [];
 		this.ids = {};
 		this.types = {};
-	}
+	},
 
 	add (entry) {
 		this.arr.push(entry);
-	}
+	},
 
 	resolve (mix) {
 		var entry = null;
@@ -23,7 +21,7 @@ module.exports = class EntryCollection {
 			throw Error(`Entry for Type '${mix.name}' not found`)
 		}	
 		return entry.resolve();
-	}
+	},
 
 	getByType (Type) {
 		var arr = this.arr,
@@ -35,7 +33,7 @@ module.exports = class EntryCollection {
 				return x;
 		}
 		return null;
-	}
+	},
 
 	getFor (mix, required = false) {
 		if (typeof mix === 'string') {
@@ -53,7 +51,8 @@ module.exports = class EntryCollection {
 			return entry;
 		}
 		throw new Error('Collection::getFor. Unsupported value type: ' + (typeof mix));
-	}
+	},
+
 	getForType (Type) {
 		var name = Type.name,			
 			arr = this.types[name];
@@ -68,7 +67,8 @@ module.exports = class EntryCollection {
 				return x.entry;
 		}
 		return null;
-	}
+	},
+
 	removeForType(Type) {
 		var arr = this.types,
 			imax = arr.length,
@@ -81,7 +81,7 @@ module.exports = class EntryCollection {
 			}
 		}
 		return;
-	}	
+	},
 
 	removeFor (mix) {
 		if (typeof mix === 'string') {
@@ -102,7 +102,7 @@ module.exports = class EntryCollection {
 			}
 			return;
 		}
-	}
+	},
 
 	registerFor (mix, entry) {
 		if (typeof mix === 'string') {
@@ -124,4 +124,4 @@ module.exports = class EntryCollection {
 		throw Error('Collection::registerFor. Unsupported value type: ' + (typeof mix));
 	}
 
-}
+});

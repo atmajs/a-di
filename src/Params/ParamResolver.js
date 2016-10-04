@@ -1,21 +1,20 @@
 var BaseParamResolver = require('./BaseParamResolver'),
 	ObjectParamResolver = require('./ObjectParamResolver'),
-	EmptyParamResolver = require('./EmptyParamResolver'),
-	is = require('../utils/is');
+	EmptyParamResolver = require('./EmptyParamResolver');
 
-module.exports = class ParamResolver {
+module.exports = {
 	
-	static create (di, mix) {
+	create (di, mix) {
 		if (mix == null) {
 			return new EmptyParamResolver();
 		}		
-		if (is.Object(mix)) {
+		if (is_Object(mix)) {
 			return new ObjectParamResolver(di, mix);
 		}
 		return new BaseParamResolver(di, mix);
-	}
+	},
 
-	static createMany(di, arr) {
+	createMany(di, arr) {
 		var out = new Array(arr.length),
 			i = arr.length;
 		while (--i !== -1) {
@@ -23,4 +22,4 @@ module.exports = class ParamResolver {
 		}
 		return out;
 	}
-}
+};

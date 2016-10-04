@@ -2,30 +2,27 @@ var Entry = require('./Entry');
 var opts = require('../const');
 
 
-module.exports = class BaseMethodEntry extends Entry {
+module.exports = class_create(Entry, {
 
 	constructor (di, Entry) {		
 		if (typeof Entry !== 'function') {
 			throw new Error('Invalid argument. Function expected');
 		}
 		
-		super(...arguments);
-		
 		var using = di.metaReader.readFromType(Entry);
 		if (using != null) {
-			this.using(...using);
+			this.using.apply(this, using);
 		}
-	}
+	},
 
-
-	withParams (...params) {
-		this._params = params;
+	withParams () {
+		this._params = _Array_slice.call(arguments);
 		return this;
-	}
+	},
 
-
-	getParams_ (...args) {
-		var resolvers = this._resolvers,
+	getParams_ () {
+		var args = _Array_slice.call(arguments),
+			resolvers = this._resolvers,
 			params = this._params;
 
 
@@ -84,4 +81,4 @@ module.exports = class BaseMethodEntry extends Entry {
 		
 		return ctorParams;
 	}
-}
+});

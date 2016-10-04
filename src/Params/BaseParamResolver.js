@@ -1,7 +1,8 @@
-module.exports = class BaseParamResolver {
+module.exports = class_create({
+	
 	constructor (di, mix) {
 		this.entry = di.entries.getFor(mix, true);
-	}
+	},
 
 	resolve (currentParam) {
 		if (currentParam != null) {
@@ -9,4 +10,4 @@ module.exports = class BaseParamResolver {
 		}
 		return this.entry.resolve();
 	}
-};
+});
