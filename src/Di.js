@@ -1,9 +1,9 @@
 var ObjectEntry = require('./Entries/ObjectEntry');
 var TypeEntry = require('./Entries/TypeEntry');
 var FnEntry = require('./Entries/FnEntry');
-
 var MetaReader = require('./Entries/MetaReader');
 var EntryCollection = require('./Entries/EntryCollection');
+var { create: class_create } = require('./utils/class');
 
 module.exports = class_create({
 	constructor (container = null) {

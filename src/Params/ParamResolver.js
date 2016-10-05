@@ -1,6 +1,7 @@
 var BaseParamResolver = require('./BaseParamResolver'),
 	ObjectParamResolver = require('./ObjectParamResolver'),
-	EmptyParamResolver = require('./EmptyParamResolver');
+	EmptyParamResolver = require('./EmptyParamResolver'),
+	is = require('../utils/is');
 
 module.exports = {
 	
@@ -8,7 +9,7 @@ module.exports = {
 		if (mix == null) {
 			return new EmptyParamResolver();
 		}		
-		if (is_Object(mix)) {
+		if (is.Object(mix)) {
 			return new ObjectParamResolver(di, mix);
 		}
 		return new BaseParamResolver(di, mix);

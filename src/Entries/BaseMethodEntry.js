@@ -74,7 +74,7 @@ module.exports = class_create(Entry, {
 			}
 		}
 		
-		var Fn = this.Entry,
+		var Fn = this.Entry(),
 			expect = Fn.length;
 		if (expect > size) {
 			throw new Error(`Not enough arguments for Method ${Fn.name}. Have ${size}. Expect ${expect}`);

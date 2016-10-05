@@ -9,7 +9,7 @@ module.exports = class_create(BaseMethodEntry, {
 		this.Type = Type;		
 	},
 
-	get Entry () {
+	Entry () {
 		return this.Type;
 	},
 

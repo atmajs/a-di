@@ -8,8 +8,8 @@ module.exports = class_create(BaseMethodEntry, {
 		this.Fn = fn;
 	},
 
-	get Entry () {
-		return this.Fn
+	Entry () {
+		return this.Fn;
 	},
 
 	resolve (...args) {

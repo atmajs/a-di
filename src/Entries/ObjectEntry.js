@@ -42,6 +42,10 @@ module.exports = class_create(Entry, {
 
 	wrap () {
 		return this.resolve.bind(this);
+	},
+
+	Entry () {
+		return this.Object;
 	}
 
 });

@@ -1,5 +1,7 @@
 var BaseParamResolver = require('./BaseParamResolver');
+var is = require('../utils/is');
 var { create: class_create } = require('../utils/class');
+
 
 module.exports = class_create({
 	
@@ -9,7 +11,7 @@ module.exports = class_create({
 	},
 
 	resolve (currentParam) {
-		if (currentParam !== null && is_Object(currentParam) === false) {
+		if (currentParam !== null && is.Object(currentParam) === false) {
 			throw new Error('Object is expected to extend the resultig one')
 		}
 

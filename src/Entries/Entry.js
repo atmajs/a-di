@@ -56,13 +56,13 @@ module.exports = class_create({
 
 	register () {
 		var coll = this.di.entries;
-		coll.removeFor(this.Entry);
+		coll.removeFor(this.Entry());
 		coll.add(this);
 		return this;
 	},
 
 	asSelf () {
-		this.di.entries.registerFor(this.Entry, this);
+		this.di.entries.registerFor(this.Entry(), this);
 		return this;
 	},
 
@@ -74,7 +74,7 @@ module.exports = class_create({
 		this.onActivated = fn;
 	},
 
-	get Entry () {
+	Entry () {
 		throw new Error('Not implemented')
 	}
 });
