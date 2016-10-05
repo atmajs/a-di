@@ -1,6 +1,7 @@
 var Entry = require('./Entry');
 var opts = require('../const');
-
+var Arr = require('../utils/arr');
+var { create: class_create } = require('../utils/class');
 
 module.exports = class_create(Entry, {
 
@@ -16,12 +17,12 @@ module.exports = class_create(Entry, {
 	},
 
 	withParams () {
-		this._params = _Array_slice.call(arguments);
+		this._params = Arr.from(arguments);
 		return this;
 	},
 
 	getParams_ () {
-		var args = _Array_slice.call(arguments),
+		var args = Arr.from(arguments),
 			resolvers = this._resolvers,
 			params = this._params;
 

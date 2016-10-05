@@ -1,5 +1,7 @@
 var BaseMethodEntry = require('./BaseMethodEntry');
 var ParamResolver = require('../Params/ParamResolver');
+var Arr = require('../utils/arr');
+var { create: class_create } = require('../utils/class');
 
 module.exports = class_create(BaseMethodEntry, {
 	constructor (container, fn) {	
@@ -11,7 +13,7 @@ module.exports = class_create(BaseMethodEntry, {
 	},
 
 	resolve (...args) {
-		var args = _Array_slice.call(arguments),
+		var args = Arr.from(arguments),
 			params = this.getParams_.apply(this, args);
 		return this.Fn.apply(null, params);
 	},

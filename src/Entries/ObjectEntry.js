@@ -1,5 +1,6 @@
 var Entry = require('./Entry');
 var ParamResolver = require('../Params/ParamResolver');
+var { create: class_create } = require('../utils/class');
 
 module.exports = class_create(Entry, {
 	

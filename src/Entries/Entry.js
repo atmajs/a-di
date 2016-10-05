@@ -1,5 +1,7 @@
 var ParamResolver = require('../Params/ParamResolver');
 var opts = require('../const');
+var Arr = require('../utils/arr');
+var { create: class_create } = require('../utils/class');
 
 module.exports = class_create({
 	
@@ -26,7 +28,7 @@ module.exports = class_create({
 	},
 
 	using () {
-		var args = _Array_slice.call(arguments);
+		var args = Arr.from(arguments);
 		this._using.push.apply(this._using, args);
 
 
@@ -42,7 +44,7 @@ module.exports = class_create({
 	},
 
 	as () {
-		var args = _Array_slice.call(arguments);
+		var args = Arr.from(arguments);
 		this._as.push.apply(this._as, args);
 
 		var i = args.length, entries = this.di.entries;

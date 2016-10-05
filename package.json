@@ -27,6 +27,7 @@
   "homepage": "https://github.com/tenbits/di#readme",
   "devDependencies": {
     "app-bundler": "0.0.7",
+    "atma-io": "^0.2.16",
     "atma-loader-babel": "^1.0.26"
   },
   "app-bundler": {
@@ -35,12 +36,19 @@
     "package": {
       "module": "commonjs",
       "moduleWrapper": "umd",
-      "moduleName": "Di"
+      "moduleName": "Di",
+      "commonjs": {
+        "output": "simplified"
+      }
     },
     "middlewares": {
       "js": [
-        "importer:read", "atma-loader-babel:read"
+        "importer:read",
+        "atma-loader-babel:read"
       ]
     }
+  },
+  "dependencies": {
+    "atma-io": "^0.2.16"
   }
 }

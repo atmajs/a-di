@@ -1,5 +1,3 @@
-// import utils/
-
 var ObjectEntry = require('./Entries/ObjectEntry');
 var TypeEntry = require('./Entries/TypeEntry');
 var FnEntry = require('./Entries/FnEntry');

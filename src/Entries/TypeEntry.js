@@ -1,5 +1,7 @@
 var BaseMethodEntry = require('./BaseMethodEntry');
 var opts = require('../const');
+var Arr = require('../utils/arr');
+var { create: class_create } = require('../utils/class');
 
 module.exports = class_create(BaseMethodEntry, {
 	
@@ -12,7 +14,7 @@ module.exports = class_create(BaseMethodEntry, {
 	},
 
 	resolve (...args) {
-		var args = _Array_slice.call(arguments),
+		var args = Arr.from(arguments),
 			params = this.getParams_.apply(this, args),
 			Ctor = this.Type;
 		return new (Function.prototype.bind.apply(Ctor, [null].concat(params)))();

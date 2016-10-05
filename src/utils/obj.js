@@ -1,8 +1,5 @@
-var obj_extend,
-	obj_extendDefaults,
-	obj_create;
-(function(){
-	obj_extend = function(a, b){
+module.exports = {
+	extend: function(a, b){
 		if (b == null)
 			return a || {};
 
@@ -13,8 +10,8 @@ var obj_extend,
 			a[key] = b[key];
 		}
 		return a;
-	};
-	obj_extendDefaults = function(a, b){
+	},
+	extendDefaults: function(a, b){
 		if (b == null)
 			return a || {};
 		if (a == null)
@@ -30,8 +27,12 @@ var obj_extend,
 			}
 		}
 		return a;
-	};
-	_Object_create = obj_create = Object.create || function(x) {
+	}
+};
+
+var obj_create;
+(function(){	
+	obj_create = Object.create || function(x) {
 		var Ctor = function(){};
 		Ctor.prototype = x;
 		return new Ctor;
