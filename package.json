@@ -28,6 +28,7 @@
   "homepage": "https://github.com/tenbits/di#readme",
   "devDependencies": {
     "app-bundler": "0.0.7",
+    "atma": "^0.10.58",
     "atma-io": "^0.2.17",
     "atma-loader-babel": "^1.0.26"
   },
