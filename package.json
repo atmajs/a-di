@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "atma test"
+    "test": "atma test",
+    "build": "app-bundler"
   },
   "repository": {
     "type": "git",
@@ -47,8 +48,5 @@
         "atma-loader-babel:read"
       ]
     }
-  },
-  "dependencies": {
-    "atma-io": "^0.2.16"
   }
 }

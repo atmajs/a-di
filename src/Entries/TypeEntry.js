@@ -23,7 +23,7 @@ module.exports = class_create(BaseMethodEntry, {
 	wrap () {
 		var self = this;
 		return function () {
-			return self.resolve.apply(this, arguments);
+			return self.resolve.apply(self, arguments);
 		};
 	}
 });

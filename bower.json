@@ -1,0 +1,16 @@
+{
+  "name": "di-js",
+  "description": "Dependency injection library for Javascript",
+  "main": "lib/di.js",
+  "authors": [
+    "Alex Kit (alex.kit@atmajs.com)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "di",
+    "dependency",
+    "injection",
+    "IoC"
+  ],
+  "homepage": "https://github.com/tenbits/di"
+}
