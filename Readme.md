@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-    <a href='https://travis-ci.org/tenbits/di' target='_blank'>
-        <img src='https://travis-ci.org/tenbits/di.png?branch=master' />
+    <a href='https://travis-ci.org/tenbits/a-di' target='_blank'>
+        <img src='https://travis-ci.org/tenbits/a-di.png?branch=master' />
         </a>
-    <a href='http://badge.fury.io/js/di' target='_blank'>
-        <img src='https://badge.fury.io/js/di.svg' />
+    <a href='http://badge.fury.io/js/a-di' target='_blank'>
+        <img src='https://badge.fury.io/js/a-di.svg' />
         </a>
-    <a href='http://badge.fury.io/bo/di' target='_blank'>
-        <img src='https://badge.fury.io/bo/di.svg' />
+    <a href='http://badge.fury.io/bo/a-di' target='_blank'>
+        <img src='https://badge.fury.io/bo/a-di.svg' />
         </a>
 </p>
 

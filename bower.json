@@ -1,5 +1,5 @@
 {
-  "name": "di-js",
+  "name": "a-di",
   "description": "Dependency injection library for Javascript",
   "main": "lib/di.js",
   "authors": [

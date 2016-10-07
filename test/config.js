@@ -13,6 +13,14 @@ module.exports = {
 		'modules': {
 			exec: 'node',
 			tests: 'test/*.test',
+		},
+		'mask': {
+			exec: 'dom',
+			env: [ 
+				'/node_modules/maskjs/lib/mask.js::mask', 
+				'/lib/di.js::Di' 
+			],
+			tests: 'test/mask/**',
 		}
 	}
 };
