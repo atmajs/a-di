@@ -2,7 +2,7 @@ var di;
 UTest({
 	$before () {
 		di = new Di;
-		mask.Di.setLibrary(di);
+		mask.Di.setResolver(di);
 		mask.Module.clearCache();
 	},	
 	$teardown () {
