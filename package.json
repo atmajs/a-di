@@ -31,7 +31,7 @@
     "atma": "^0.10.58",
     "atma-io": "^0.2.17",
     "atma-loader-babel": "^1.0.26",
-    "maskjs": "^0.56.5"
+    "maskjs": "^0.57.2"
   },
   "app-bundler": {
     "file": "src/Di.js",
