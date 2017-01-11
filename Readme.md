@@ -353,4 +353,4 @@ With options `"ignore" "extend" "override"` you can control how we handle the th
 :checkered_flag:
 
 ----
-:copyright: MIT - 2016 Atma.js Project
+:copyright: MIT - 2017 Atma.js Project
