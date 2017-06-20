@@ -248,8 +248,9 @@ class Foo {
 di
     .registerType(Foo)
     .methods({
-        // DummyLogger will be replaced with the registration for ILog
-        logger: [ILog]
+        // The method on an instance can be the called without any arguments
+	// Di will provide required dependencies to the inner function
+        doSmth: [ILog]
     })
     .asSelf();
 ```
