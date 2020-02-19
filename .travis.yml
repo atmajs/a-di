@@ -1,16 +1,25 @@
-sudo: false
+sudo: required
+
+services:
+  - xvfb
+
+addons:
+    firefox: "latest"
+
 before_script:
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
   - sleep 5
-  - node_modules/.bin/atma server &
+  - npm run bundle &
+  - sleep 8
+  - npm run test-server &
   - sleep 5
   - firefox http://localhost:5777/utest/ &
   - sleep 8
  
 script:
   - "npm test"
-  
+
 language: node_js
+
 node_js:
-  - "6.6.0"
+  - "10.1.0"

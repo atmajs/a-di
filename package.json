@@ -9,10 +9,11 @@
     "scripts": {
         "test-server": "atma server --TEST",
         "test": "atma test",
-        "build": "app-bundler && npm run build-dts",
+        "bundle": "app-bundler",
         "watch": "app-bundler --watch",
+        "build": "npm run bundle && npm run dts",
         "server": "atma server",
-        "build-dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
+        "dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
         "release": "echo \"Run atma pub -m \"message\"\""
     },
     "repository": {
