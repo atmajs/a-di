@@ -47,6 +47,8 @@ _Highly inspired by [Autofac.NET](https://autofac.org/)_
 
 > The greates challenge for DI frameworks in JavaScript is to get the list of dependencies for a constructor, method, etc. JavaScript is not statically typed, so here other ways should be found to declare the dependencies. And we also try to follow the _**1st rule**_ of any di framework - `"Your classes should not be dependent on the DI itself"`.
 
+> Though you can use it as a **Service Locator** 
+
 When registering the component, we specify identifiers, by which the dependency is resolved. It can be some another `Type`, string identifier, `self-type`. _But we do not encourage you to use string identifiers._
 
 ### `1.1` Type
