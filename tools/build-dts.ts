@@ -9,7 +9,7 @@ async function process () {
     }
 
     dts.bundle({
-        name: 'di',
+        name: 'a-di',
         main: './ts-temp/exports.d.ts',
         out: './typings/index.d.ts',
         
