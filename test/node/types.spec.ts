@@ -24,6 +24,26 @@ UTest({
             di = new Di;
         },
         'should resolve dependency'() {
+            class SingleBar { }
+            
+            var bar = di.resolve(SingleBar);
+            is_(bar, SingleBar);
+
+            var bar2 = di.resolve(SingleBar);
+            eq_(bar2, bar);
+
+            class NotSingleBar { }
+            di
+                .registerType(NotSingleBar)
+                .isSingleton(false);
+
+            var notSingleBar = di.resolve(NotSingleBar);
+            is_(notSingleBar, NotSingleBar);
+
+            var notSingleBar2 = di.resolve(NotSingleBar);
+            notEq_(notSingleBar2, notSingleBar);
+        },
+        'should resolve singleton'() {
             di
                 .registerType(Foo)
                 .as(IFoo);
