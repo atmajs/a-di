@@ -1,6 +1,6 @@
 {
     "name": "a-di",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Dependency injection library for Javascript/Typescript",
     "main": "lib/di.js",
     "directories": {

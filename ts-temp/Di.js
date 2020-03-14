@@ -9,7 +9,7 @@ var Di = /** @class */ (function () {
     function Di(parent) {
         if (parent === void 0) { parent = null; }
         this.parent = parent;
-        this.di = this;
+        this.default = this;
         this.entries = new EntryCollection_1.EntryCollection(this);
         this.metaReader = new MetaReader_1.MetaReader();
     }

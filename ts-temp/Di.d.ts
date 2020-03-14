@@ -9,7 +9,7 @@ export declare class Di {
     static Di: typeof Di;
     static di: Di;
     static default: Di;
-    di: this;
+    default: this;
     entries: EntryCollection;
     metaReader: MetaReader;
     constructor(parent?: Di);

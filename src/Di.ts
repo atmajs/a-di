@@ -11,7 +11,7 @@ export class Di {
     static di = new Di
     static default = Di.di
     
-    di = this
+    default = this
     
     entries = new EntryCollection(this);
     metaReader = new MetaReader();
