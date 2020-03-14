@@ -8,6 +8,7 @@ export declare class Di {
     parent: Di;
     static Di: typeof Di;
     static di: Di;
+    static default: Di;
     di: this;
     entries: EntryCollection;
     metaReader: MetaReader;

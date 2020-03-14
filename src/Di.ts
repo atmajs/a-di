@@ -9,6 +9,7 @@ export class Di {
 
     static Di = Di
     static di = new Di
+    static default = Di.di
     
     di = this
     
