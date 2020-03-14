@@ -1,0 +1,6 @@
+src/
+assets/
+tools/
+test/
+tsconfig-build.json
+.travis.yml

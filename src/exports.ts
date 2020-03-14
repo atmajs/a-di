@@ -1,3 +1,4 @@
 import { Di } from './Di'
 
-export = Di.di;
+const di = Di.di;
+export = di;

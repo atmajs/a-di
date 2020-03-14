@@ -51,6 +51,14 @@ _Highly inspired by [Autofac.NET](https://autofac.org/)_
 
 When registering the component, we specify identifiers, by which the dependency is resolved. It can be some another `Type`, string identifier, `self-type`. _But we do not encourage you to use string identifiers._
 
+It is also possible to get the instance without having previously to register the Type
+
+```ts
+const foo = di.resolve(Foo);
+```
+
+> Later you can register another Type for this one.
+
 ### `1.1` Type
 
 A `Type` in JavaScript we call a `Class` or a `Function`, as almost any _`function`_ can be used as a contructor for an instance. 

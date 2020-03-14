@@ -2,8 +2,8 @@
 
 declare module 'a-di' {
     import { Di } from 'a-di/Di';
-    const _default: Di;
-    export = _default;
+    const di: Di;
+    export = di;
 }
 
 declare module 'a-di/Di' {
