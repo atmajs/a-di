@@ -12,12 +12,16 @@ var EntryCollection = /** @class */ (function () {
         this.arr.push(entry);
     };
     EntryCollection.prototype.resolve = function (mix) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
         if (mix == null) {
             throw new Error('Resolve argument is undefined');
         }
         var entry = null;
         if (typeof mix === 'string') {
-            entry = this.ids[entry];
+            entry = this.ids[mix];
             if (entry == null) {
                 throw Error("Entry for Type '" + mix + "' not found");
             }
@@ -29,7 +33,7 @@ var EntryCollection = /** @class */ (function () {
                 this.registerFor(mix, entry);
             }
         }
-        return entry.resolve();
+        return entry.resolve.apply(entry, args);
     };
     EntryCollection.prototype.getByType = function (Type) {
         var arr = this.arr;

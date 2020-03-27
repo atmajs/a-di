@@ -5,7 +5,7 @@ import { IType } from './IType';
 
 export class EntryCollection {
     protected arr: Entry[] = [];
-    protected ids = {};
+    protected ids: { [key: string]: Entry } = {};
     protected types = {};
 
     constructor(private di: Di) {
@@ -16,14 +16,14 @@ export class EntryCollection {
         this.arr.push(entry);
     }
 
-    resolve <T> (mix: string | IType<T>): T {
+    resolve <T> (mix: string | IType<T>, ...args): T {
         if (mix == null) {
             throw new Error('Resolve argument is undefined');
         }
 
-        let entry = null;
+        let entry: Entry = null;
         if (typeof mix === 'string') {
-            entry = this.ids[entry];
+            entry = this.ids[mix];
             if (entry == null) {
                 throw Error(`Entry for Type '${mix}' not found`)
             }
@@ -35,7 +35,7 @@ export class EntryCollection {
                 this.registerFor(mix, entry);
             }
         }
-        return entry.resolve();
+        return entry.resolve(...args);
     }
 
     getByType<T> (Type: IType<T>): TypeEntry<T> {

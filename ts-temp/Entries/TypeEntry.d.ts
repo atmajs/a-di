@@ -7,5 +7,5 @@ export declare class TypeEntry<T = any> extends BaseMethodEntry {
     constructor(di: Di, Type: IType);
     Entry(): IType<T>;
     resolve(...args: any[]): T;
-    wrap(): (...args: any[]) => T;
+    wrap(): T;
 }

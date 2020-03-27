@@ -1,6 +1,6 @@
 {
     "name": "a-di",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Dependency injection library for Javascript/Typescript",
     "main": "lib/di.js",
     "directories": {
@@ -35,10 +35,11 @@
     "devDependencies": {
         "@types/node": "^13.7.1",
         "app-bundler": "0.0.82",
-        "atma": "^0.12.18",
+        "atma": "^0.12.19",
         "atma-io": "^1.2.29",
         "atma-loader-ts": "^1.1.12",
-        "maskjs": "^0.57.2"
+        "maskjs": "^0.57.2",
+        "sinon": "^9.0.1"
     },
     "app-bundler": {
         "file": "src/exports.ts",

@@ -28,8 +28,8 @@ declare module 'a-di/Di' {
         Type(Type: IType): TypeEntry<any>;
         Function<T extends Function>(fn: T): FnEntry<T>;
         Object(object: any): ObjectEntry;
-        resolve<T>(mix: string | IType<T>): T;
-        wrapType(Type: any): any;
+        resolve<T extends new (...args: any) => any>(mix: string | IType<T>, ...args: ConstructorParameters<T>): T;
+        wrapType(Type: any): void;
     }
 }
 
@@ -40,13 +40,15 @@ declare module 'a-di/Entries/EntryCollection' {
     import { IType } from 'a-di/Entries/IType';
     export class EntryCollection {
         protected arr: Entry[];
-        protected ids: {};
+        protected ids: {
+            [key: string]: Entry;
+        };
         protected types: {};
         constructor(di: Di);
         add(entry: Entry): void;
-        resolve<T>(mix: string | IType<T>): T;
+        resolve<T>(mix: string | IType<T>, ...args: any[]): T;
         getByType<T>(Type: IType<T>): TypeEntry<T>;
-        getFor(mix: any, required?: boolean): any;
+        getFor(mix: any, required?: boolean): Entry;
         getForType(Type: any): Entry;
         removeForType(Type: any): void;
         removeFor(mix: any): void;
@@ -70,7 +72,7 @@ declare module 'a-di/Entries/TypeEntry' {
         constructor(di: Di, Type: IType);
         Entry(): IType<T>;
         resolve(...args: any[]): T;
-        wrap(): (...args: any[]) => T;
+        wrap(): T;
     }
 }
 
@@ -107,7 +109,6 @@ declare module 'a-di/Entries/IType' {
 
 declare module 'a-di/Entries/Entry' {
     import { Di } from 'a-di/Di';
-    import { IType } from 'a-di/Entries/IType';
     export abstract class Entry {
         di: Di;
         protected _as: any[];
@@ -125,9 +126,10 @@ declare module 'a-di/Entries/Entry' {
         as(...args: any[]): this;
         register(): this;
         asSelf(): this;
-        resolve(mix?: string | IType): any;
+        resolve(...args: any[]): any;
         onActivated(fn: any): void;
         Entry(): any;
+        wrap(): void;
     }
 }
 

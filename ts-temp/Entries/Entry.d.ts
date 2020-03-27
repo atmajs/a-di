@@ -1,5 +1,4 @@
 import { Di } from '../Di';
-import { IType } from './IType';
 export declare abstract class Entry {
     di: Di;
     protected _as: any[];
@@ -17,7 +16,8 @@ export declare abstract class Entry {
     as(...args: any[]): this;
     register(): this;
     asSelf(): this;
-    resolve(mix?: string | IType): any;
+    resolve(...args: any[]): any;
     onActivated(fn: any): void;
     Entry(): any;
+    wrap(): void;
 }

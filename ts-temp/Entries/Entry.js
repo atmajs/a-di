@@ -65,13 +65,20 @@ var Entry = /** @class */ (function () {
         this.di.entries.registerFor(this.Entry(), this);
         return this;
     };
-    Entry.prototype.resolve = function (mix) {
+    Entry.prototype.resolve = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
         throw new Error('Not implemented');
     };
     Entry.prototype.onActivated = function (fn) {
         this.onActivatedCb = fn;
     };
     Entry.prototype.Entry = function () {
+        throw new Error('Not implemented');
+    };
+    Entry.prototype.wrap = function () {
         throw new Error('Not implemented');
     };
     return Entry;

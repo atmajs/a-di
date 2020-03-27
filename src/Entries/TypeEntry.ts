@@ -31,9 +31,9 @@ export class TypeEntry<T = any> extends BaseMethodEntry {
         return instance;
     }
 
-    wrap() {
+    wrap (): T {
         var self = this;
-        return function (...args) {
+        return <any> function (...args) {
             return self.resolve(...args);
         };
     }

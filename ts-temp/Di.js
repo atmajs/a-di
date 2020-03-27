@@ -1,4 +1,11 @@
 "use strict";
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var EntryCollection_1 = require("./Entries/EntryCollection");
 var MetaReader_1 = require("./Entries/MetaReader");
@@ -32,7 +39,12 @@ var Di = /** @class */ (function () {
         return new ObjectEntry_1.ObjectEntry(this, object);
     };
     Di.prototype.resolve = function (mix) {
-        return this.entries.resolve(mix);
+        var _a;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return (_a = this.entries).resolve.apply(_a, __spreadArrays([mix], args));
     };
     Di.prototype.wrapType = function (Type) {
         return this.entries.getFor(Type).wrap();

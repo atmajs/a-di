@@ -11,7 +11,7 @@ export class BaseMethodEntry extends Entry {
             throw new Error('Invalid argument. Function expected');
         }
 
-        var using = di.metaReader.readFromType(Entry);
+        let using = di.metaReader.readFromType(Entry);
         if (using != null) {
             this.using.apply(this, using);
         }

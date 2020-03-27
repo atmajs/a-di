@@ -19,6 +19,6 @@ export declare class Di {
     Type(Type: IType): TypeEntry<any>;
     Function<T extends Function>(fn: T): FnEntry<T>;
     Object(object: any): ObjectEntry;
-    resolve<T>(mix: string | IType<T>): T;
-    wrapType(Type: any): any;
+    resolve<T extends new (...args: any) => any>(mix: string | IType<T>, ...args: ConstructorParameters<T>): T;
+    wrapType(Type: any): void;
 }

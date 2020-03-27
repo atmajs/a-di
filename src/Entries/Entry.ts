@@ -73,7 +73,7 @@ export abstract class Entry {
         return this;
     }
 
-    resolve (mix?: string | IType): any {
+    resolve (...args): any {
         throw new Error('Not implemented');
     }
 
@@ -82,6 +82,9 @@ export abstract class Entry {
     }
 
     Entry(): any {
-        throw new Error('Not implemented')
+        throw new Error('Not implemented');
+    }
+    wrap () {
+        throw new Error('Not implemented');
     }
 };

@@ -44,8 +44,8 @@ export class Di {
         return new ObjectEntry(this, object);
     }
 
-    resolve <T> (mix: string | IType<T>): T {
-        return this.entries.resolve(mix);
+    resolve <T extends new (...args: any) => any> (mix: string | IType<T>, ...args: ConstructorParameters<T>): T {
+        return this.entries.resolve(mix, ...args);
     }
 
     wrapType(Type) {
