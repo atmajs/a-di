@@ -28,7 +28,7 @@ declare module 'a-di/Di' {
         Type(Type: IType): TypeEntry<any>;
         Function<T extends Function>(fn: T): FnEntry<T>;
         Object(object: any): ObjectEntry;
-        resolve<T extends new (...args: any) => any>(mix: string | IType<T>, ...args: ConstructorParameters<T>): T;
+        resolve<T extends IType>(mix: string | T, ...args: ConstructorParameters<T>): T;
         wrapType(Type: any): void;
     }
 }
