@@ -1,12 +1,13 @@
 import { Entry } from './Entry';
 import { ParamResolver } from '../Params/ParamResolver';
+import { Di } from '../Di';
 
 export class ObjectEntry extends Entry {
     Object: any
     resolvers: any[]
 
-    constructor(public container, object) {
-        super(container);
+    constructor(di: Di, object) {
+        super(di);
         this.Object = object;
     }
 
@@ -15,13 +16,17 @@ export class ObjectEntry extends Entry {
             throw new Error('Invalid argument count in using for an ObjectEntry');
         }
         for (var key in objectDefinitions) {
-            var paramResolver = ParamResolver.create(this.container, objectDefinitions[key]);
+            var paramResolver = ParamResolver.create(this.di, objectDefinitions[key]);
             this.resolvers.push([key, paramResolver]);
         }
         return this;
     }
 
-    resolve(currentObject) {
+    resolve(currentObject?) {
+        if (this.cfg_singleton) {
+            return this.Object;
+        }
+
         var object = Object.create(this.Object);
         var arr = this.resolvers,
             i = arr.length;

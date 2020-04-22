@@ -17,9 +17,8 @@ var Entry_1 = require("./Entry");
 var ParamResolver_1 = require("../Params/ParamResolver");
 var ObjectEntry = /** @class */ (function (_super) {
     __extends(ObjectEntry, _super);
-    function ObjectEntry(container, object) {
-        var _this = _super.call(this, container) || this;
-        _this.container = container;
+    function ObjectEntry(di, object) {
+        var _this = _super.call(this, di) || this;
         _this.Object = object;
         return _this;
     }
@@ -28,12 +27,15 @@ var ObjectEntry = /** @class */ (function (_super) {
             throw new Error('Invalid argument count in using for an ObjectEntry');
         }
         for (var key in objectDefinitions) {
-            var paramResolver = ParamResolver_1.ParamResolver.create(this.container, objectDefinitions[key]);
+            var paramResolver = ParamResolver_1.ParamResolver.create(this.di, objectDefinitions[key]);
             this.resolvers.push([key, paramResolver]);
         }
         return this;
     };
     ObjectEntry.prototype.resolve = function (currentObject) {
+        if (this.cfg_singleton) {
+            return this.Object;
+        }
         var object = Object.create(this.Object);
         var arr = this.resolvers, i = arr.length;
         while (--i > -1) {

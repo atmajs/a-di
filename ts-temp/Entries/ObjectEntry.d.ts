@@ -1,11 +1,11 @@
 import { Entry } from './Entry';
+import { Di } from '../Di';
 export declare class ObjectEntry extends Entry {
-    container: any;
     Object: any;
     resolvers: any[];
-    constructor(container: any, object: any);
+    constructor(di: Di, object: any);
     using(objectDefinitions: any): this;
-    resolve(currentObject: any): any;
+    resolve(currentObject?: any): any;
     wrap(): any;
     Entry(): any;
 }

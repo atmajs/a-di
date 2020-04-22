@@ -120,7 +120,7 @@ export class EntryCollection {
         }
     }
 
-    registerFor(mix, entry) {
+    registerFor(mix, entry: Entry) {
         if (typeof mix === 'string') {
             this.ids[mix] = entry;
             return;

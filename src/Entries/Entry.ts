@@ -51,7 +51,6 @@ export abstract class Entry {
 
     as(...args): this {
         this._as.push(...args);
-
         var i = args.length, entries = this.di.entries;
         while (--i > -1) {
             entries.registerFor(args[i], this);

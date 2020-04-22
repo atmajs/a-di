@@ -52,7 +52,7 @@ declare module 'a-di/Entries/EntryCollection' {
         getForType(Type: any): Entry;
         removeForType(Type: any): void;
         removeFor(mix: any): void;
-        registerFor(mix: any, entry: any): void;
+        registerFor(mix: any, entry: Entry): void;
     }
 }
 
@@ -89,13 +89,13 @@ declare module 'a-di/Entries/FnEntry' {
 
 declare module 'a-di/Entries/ObjectEntry' {
     import { Entry } from 'a-di/Entries/Entry';
+    import { Di } from 'a-di/Di';
     export class ObjectEntry extends Entry {
-        container: any;
         Object: any;
         resolvers: any[];
-        constructor(container: any, object: any);
+        constructor(di: Di, object: any);
         using(objectDefinitions: any): this;
-        resolve(currentObject: any): any;
+        resolve(currentObject?: any): any;
         wrap(): any;
         Entry(): any;
     }
