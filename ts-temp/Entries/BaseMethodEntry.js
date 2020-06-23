@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Entry_1 = require("./Entry");
 var const_1 = require("../const");
+var TypeMeta_1 = require("../TypeMeta");
 var BaseMethodEntry = /** @class */ (function (_super) {
     __extends(BaseMethodEntry, _super);
     function BaseMethodEntry(di, Entry) {
@@ -41,11 +42,21 @@ var BaseMethodEntry = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        var resolvers = this._resolvers, params = this._params;
-        var argsIgnore = this.cfg_arguments === const_1.Opts.args.IGNORE, argsExtend = this.cfg_arguments === const_1.Opts.args.EXTEND, argsOverride = this.cfg_arguments === const_1.Opts.args.OVERRIDE;
+        var _a, _b;
+        var Entry = this.Entry();
+        var resolvers = this._resolvers;
+        var params = this._params;
+        var meta = (_a = this._meta, (_a !== null && _a !== void 0 ? _a : (this._meta = TypeMeta_1.TypeMeta.prepairMeta(Entry))));
+        var argsIgnore = this.cfg_arguments === const_1.Opts.args.IGNORE;
+        var argsExtend = this.cfg_arguments === const_1.Opts.args.EXTEND;
+        var argsOverride = this.cfg_arguments === const_1.Opts.args.OVERRIDE;
         var size = resolvers.length;
-        if (size < params.length)
+        if (size < params.length) {
             size = params.length;
+        }
+        if (size < Entry.length) {
+            size = Entry.length;
+        }
         if (argsIgnore === false) {
             if (argsExtend) {
                 size += args.length;
@@ -57,18 +68,26 @@ var BaseMethodEntry = /** @class */ (function (_super) {
         var ctorParams = new Array(size);
         var i = -1;
         while (++i < size) {
+            var arg = null;
             if (i < params.length && params[i] != null) {
-                var arg = argsIgnore === false && i < args.length && args[i] != null
+                arg = argsIgnore === false && i < args.length && args[i] != null
                     ? args[i]
                     : params[i];
-                ctorParams[i] = arg;
-                continue;
             }
-            if (i < resolvers.length && resolvers[i] != null) {
-                var arg = argsIgnore === false && i < args.length
+            if (arg == null && i < resolvers.length && resolvers[i] != null) {
+                var currentArg = argsIgnore === false && i < args.length
                     ? args[i]
                     : void 0;
-                ctorParams[i] = resolvers[i].resolve(arg);
+                arg = resolvers[i].resolve(currentArg);
+            }
+            if (arg == null && i < meta.params.length && meta.params[i] != null) {
+                var paramMeta = meta.params[i];
+                if ((_b = paramMeta) === null || _b === void 0 ? void 0 : _b.Type) {
+                    arg = this.di.resolve(paramMeta.Type);
+                }
+            }
+            if (arg != null) {
+                ctorParams[i] = arg;
                 continue;
             }
             if (argsIgnore) {
@@ -83,11 +102,6 @@ var BaseMethodEntry = /** @class */ (function (_super) {
                 ctorParams[i] = args[j];
                 continue;
             }
-        }
-        var Fn = this.Entry();
-        var expect = Fn.length;
-        if (expect > size) {
-            throw new Error("Not enough arguments for Method " + Fn.name + ". Got " + size + ". Expect " + expect);
         }
         return ctorParams;
     };

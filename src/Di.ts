@@ -4,21 +4,24 @@ import { TypeEntry } from './Entries/TypeEntry';
 import { FnEntry } from './Entries/FnEntry';
 import { ObjectEntry } from './Entries/ObjectEntry';
 import { IType } from './Entries/IType';
+import { deco_param } from './deco';
+
+type OptionalConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? Partial<P> : never;
 
 export class Di {
 
     static Di = Di
     static di = new Di
     static default = Di.di
-    
+
     default = this
     di = this;
-    
+
     entries = new EntryCollection(this);
     metaReader = new MetaReader();
 
     constructor(public parent: Di = null) {
-        
+
     }
 
     new () {
@@ -33,7 +36,7 @@ export class Di {
         return this.Function(Fn).register();
     }
 
-    Type(Type: IType) {
+    Type(Type: IType): TypeEntry {
         return new TypeEntry(this, Type);
     }
 
@@ -45,11 +48,15 @@ export class Di {
         return new ObjectEntry(this, object);
     }
 
-    resolve <T extends new (...args) => any> (mix: string | T, ...args: ConstructorParameters<T>): InstanceType<T> {
+    resolve <T extends new (...args) => any> (mix: string | T, ...args: OptionalConstructorParameters<T>): InstanceType<T> {
         return this.entries.resolve(mix, ...args);
     }
 
-    wrapType(Type) {
+    wrapType<T> (Type: T): T {
         return this.entries.getFor(Type).wrap();
     }
+
+    static param = deco_param;
+    param = deco_param;
+
 };

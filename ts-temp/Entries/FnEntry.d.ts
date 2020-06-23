@@ -4,5 +4,5 @@ export declare class FnEntry<T extends Function> extends BaseMethodEntry {
     constructor(di: any, fn: T);
     Entry(): any;
     resolve(...args: any[]): any;
-    wrap(): T;
+    wrap<TOut = T>(): TOut;
 }

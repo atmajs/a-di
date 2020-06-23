@@ -17,7 +17,7 @@ export class FnEntry <T extends Function> extends BaseMethodEntry {
         return this.Fn.apply(null, params);
     }
 
-    wrap(): T {
+    wrap<TOut = T>(): TOut {
         return this.resolve.bind(this);
     }
 };

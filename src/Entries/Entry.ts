@@ -2,6 +2,7 @@ import { Opts } from '../const';
 import { ParamResolver } from '../Params/ParamResolver';
 import { Di } from '../Di'
 import { IType } from './IType';
+import { ITypeMeta } from '../TypeMeta';
 
 export abstract class Entry {
 
@@ -9,6 +10,7 @@ export abstract class Entry {
     protected _using = [];
     protected _params = [];
     protected _resolvers = [];
+    protected _meta: ITypeMeta = null;
 
     cfg_arguments = Opts.args.OVERRIDE;
     cfg_singleton: boolean = true
@@ -16,13 +18,13 @@ export abstract class Entry {
     onActivatedCb = null;
 
     constructor(public di: Di) {
-        
+
     }
 
-    config(key: 'arguments', value: 'override' | 'ignore' | 'extend') 
-    config(key: 'singleton', value: boolean) 
+    config(key: 'arguments', value: 'override' | 'ignore' | 'extend')
+    config(key: 'singleton', value: boolean | 'arguments')
     config(key, value) {
-        var prop = 'cfg_' + key;
+        let prop = `cfg_${key}`;
         if (this[prop] === void 0) {
             throw new Error('Configuration key is not supported: ' + key);
         }
@@ -41,7 +43,7 @@ export abstract class Entry {
             resolvers[i] = ParamResolver.create(this.di, args[i]);
         }
 
-        this._resolvers.push.apply(this._resolvers, resolvers);
+        this._resolvers.push(...resolvers);
         return this;
     }
     isSingleton (val: boolean = true): this {
@@ -83,7 +85,5 @@ export abstract class Entry {
     Entry(): any {
         throw new Error('Not implemented');
     }
-    wrap () {
-        throw new Error('Not implemented');
-    }
+    abstract wrap <T = any> (): T
 };

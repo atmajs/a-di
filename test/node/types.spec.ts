@@ -6,7 +6,7 @@ class IFoo { }
 class Foo { }
 class Bar {
     constructor(public foo) {
-        
+
     }
 }
 class Qux {
@@ -19,13 +19,16 @@ class Qux {
 }
 
 UTest({
+    $before() {
+        di = new Di;
+    },
     'should test Types with dependencies in `using`': {
         $before() {
             di = new Di;
         },
         'should resolve dependency'() {
             class SingleBar { }
-            
+
             var bar = di.resolve(SingleBar);
             is_(bar, SingleBar);
 
@@ -101,7 +104,7 @@ UTest({
         'should pre-define parameter'() {
             class Test {
                 constructor(public bar, public num) {
-                    
+
                 }
             }
             var entry = di
@@ -130,7 +133,7 @@ UTest({
             class Foo { }
             class Bar {
                 constructor(public foo) {
-                    
+
                 }
                 static get $constructor() {
                     return [Foo]
@@ -147,7 +150,7 @@ UTest({
             class Qux { }
             class Test {
                 constructor(public qux) {
-                    
+
                 }
                 static get $constructor() {
                     return [Qux];
@@ -173,6 +176,37 @@ UTest({
         di.registerType(Bar).as(Foo).asSelf();
         const bar = di.resolve(Foo);
         eq_(bar instanceof Bar, true);
+    },
+    'should resolve dependency by param'() {
+        class Bar {
+            bar () {
+                return 'bar'
+            }
+        };
+
+        class Foo {
+            constructor (
+                @Di.param(Bar) public bar: Bar
+            ) {}
+        };
+        const foo = di.resolve(Foo);
+
+        eq_(foo.bar.bar(), 'bar');
+    },
+    'should resolve singletons by different arguments'() {
+        class Foo {
+            constructor (
+                @Di.param({ singleton: true }) public num: number
+            ) {}
+        };
+        const foo1 = di.resolve(Foo, 1);
+        const foo2 = di.resolve(Foo, 2);
+        const foo1_1 = di.resolve(Foo, 1);
+
+        eq_(foo1.num, 1);
+        eq_(foo2.num, 2);
+        eq_(foo1, foo1_1);
+        notEq_(foo1, foo2);
     },
 
 })

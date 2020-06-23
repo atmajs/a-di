@@ -12,6 +12,7 @@ var MetaReader_1 = require("./Entries/MetaReader");
 var TypeEntry_1 = require("./Entries/TypeEntry");
 var FnEntry_1 = require("./Entries/FnEntry");
 var ObjectEntry_1 = require("./Entries/ObjectEntry");
+var deco_1 = require("./deco");
 var Di = /** @class */ (function () {
     function Di(parent) {
         if (parent === void 0) { parent = null; }
@@ -20,6 +21,7 @@ var Di = /** @class */ (function () {
         this.di = this;
         this.entries = new EntryCollection_1.EntryCollection(this);
         this.metaReader = new MetaReader_1.MetaReader();
+        this.param = deco_1.deco_param;
     }
     Di.prototype.new = function () {
         return new Di(this);
@@ -53,6 +55,7 @@ var Di = /** @class */ (function () {
     Di.Di = Di;
     Di.di = new Di;
     Di.default = Di.di;
+    Di.param = deco_1.deco_param;
     return Di;
 }());
 exports.Di = Di;

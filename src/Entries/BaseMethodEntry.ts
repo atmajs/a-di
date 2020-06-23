@@ -1,10 +1,12 @@
 import { Entry } from './Entry';
 import { Opts } from '../const';
 import { IType } from './IType';
+import { Di } from '../Di';
+import { TypeMeta } from '../TypeMeta';
 
-export class BaseMethodEntry extends Entry {
+export abstract class BaseMethodEntry extends Entry {
 
-    constructor(di, Entry: Function | IType) {
+    constructor(di: Di, Entry: Function | IType) {
         super(di);
 
         if (typeof Entry !== 'function') {
@@ -23,16 +25,22 @@ export class BaseMethodEntry extends Entry {
     }
 
     getParams_(...args) {
-        let resolvers = this._resolvers,
-            params = this._params;
+        const Entry = this.Entry();
+        const resolvers = this._resolvers;
+        const params = this._params;
+        const meta = this._meta ?? (this._meta = TypeMeta.prepairMeta(Entry));
 
+        const argsIgnore = this.cfg_arguments === Opts.args.IGNORE;
+        const argsExtend = this.cfg_arguments === Opts.args.EXTEND;
+        const argsOverride = this.cfg_arguments === Opts.args.OVERRIDE;
 
-        var argsIgnore = this.cfg_arguments === Opts.args.IGNORE,
-            argsExtend = this.cfg_arguments === Opts.args.EXTEND,
-            argsOverride = this.cfg_arguments === Opts.args.OVERRIDE;
-
-        var size = resolvers.length;
-        if (size < params.length) size = params.length;
+        let size = resolvers.length;
+        if (size < params.length) {
+            size = params.length;
+        }
+        if (size < Entry.length) {
+            size = Entry.length;
+        }
         if (argsIgnore === false) {
             if (argsExtend) {
                 size += args.length;
@@ -42,24 +50,33 @@ export class BaseMethodEntry extends Entry {
             }
         }
 
-        var ctorParams = new Array(size);
-        var i = -1;
+        let ctorParams = new Array(size);
+        let i = -1;
         while (++i < size) {
 
+            let arg = null;
             if (i < params.length && params[i] != null) {
-                var arg = argsIgnore === false && i < args.length && args[i] != null
+                arg = argsIgnore === false && i < args.length && args[i] != null
                     ? args[i]
                     : params[i];
+            }
+            if (arg == null && i < resolvers.length && resolvers[i] != null) {
+                let currentArg = argsIgnore === false && i < args.length
+                    ? args[i]
+                    : void 0;
+                arg = resolvers[i].resolve(currentArg);
+            }
+            if (arg == null && i < meta.params.length && meta.params[i] != null) {
+                let paramMeta = meta.params[i];
+                if (paramMeta?.Type) {
+                    arg = this.di.resolve(paramMeta.Type);
+                }
+            }
+            if (arg != null) {
                 ctorParams[i] = arg;
                 continue;
             }
-            if (i < resolvers.length && resolvers[i] != null) {
-                var arg = argsIgnore === false && i < args.length
-                    ? args[i]
-                    : void 0;
-                ctorParams[i] = resolvers[i].resolve(arg);
-                continue;
-            }
+
             if (argsIgnore) {
                 continue;
             }
@@ -72,12 +89,6 @@ export class BaseMethodEntry extends Entry {
                 ctorParams[i] = args[j];
                 continue;
             }
-        }
-
-        let Fn = this.Entry();
-        let expect = Fn.length;
-        if (expect > size) {
-            throw new Error(`Not enough arguments for Method ${Fn.name}. Got ${size}. Expect ${expect}`);
         }
 
         return ctorParams;

@@ -21,11 +21,13 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var BaseMethodEntry_1 = require("./BaseMethodEntry");
+var TypeMeta_1 = require("../TypeMeta");
 var TypeEntry = /** @class */ (function (_super) {
     __extends(TypeEntry, _super);
     function TypeEntry(di, Type) {
         var _this = _super.call(this, di, Type) || this;
         _this._singleton = null;
+        _this._singletons = new Map();
         _this.Type = Type;
         return _this;
     }
@@ -37,15 +39,38 @@ var TypeEntry = /** @class */ (function (_super) {
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        if (this.cfg_singleton && this._singleton != null) {
+        var _a;
+        var Ctor = this.Type;
+        if (this._meta == null) {
+            this._meta = TypeMeta_1.TypeMeta.prepairMeta(Ctor);
+        }
+        if (this.cfg_singleton === true && this._singleton != null && this._meta.hasSingletonParams !== true) {
             return this._singleton;
         }
         var params = this.getParams_.apply(this, args);
-        var Ctor = this.Type;
+        var paramsKey = null;
+        if (this.cfg_singleton === true && this._meta.hasSingletonParams) {
+            var singletonArgs = [];
+            var paramsMeta = this._meta.params;
+            for (var i = 0; i < paramsMeta.length && i < params.length; i++) {
+                if ((_a = paramsMeta[i]) === null || _a === void 0 ? void 0 : _a.singleton) {
+                    singletonArgs.push(params[i]);
+                }
+            }
+            paramsKey = Args.getKey(singletonArgs);
+            if (this._singletons.has(paramsKey)) {
+                return this._singletons.get(paramsKey);
+            }
+        }
         //new (Function.prototype.bind.apply(Ctor, [null].concat(params)))();
         var instance = new (Ctor.bind.apply(Ctor, __spreadArrays([void 0], params)))();
-        if (this.cfg_singleton) {
-            this._singleton = instance;
+        if (this.cfg_singleton === true) {
+            if (paramsKey != null) {
+                this._singletons.set(paramsKey, instance);
+            }
+            else {
+                this._singleton = instance;
+            }
         }
         return instance;
     };
@@ -63,3 +88,37 @@ var TypeEntry = /** @class */ (function (_super) {
 }(BaseMethodEntry_1.BaseMethodEntry));
 exports.TypeEntry = TypeEntry;
 ;
+var Args;
+(function (Args) {
+    var WARN_KEY_LENGTH = 1024;
+    function getKey(args) {
+        var key = '';
+        for (var i = 0; i < args.length; i++) {
+            key += '.' + getKeySingle(args[i]);
+        }
+        if (key.length > WARN_KEY_LENGTH) {
+            console.error("DI: Singleton by arguments has the keylength of " + key.length + "c. Consider to use lightweight objects.");
+        }
+        return key;
+    }
+    Args.getKey = getKey;
+    function getKeySingle(misc) {
+        if (misc == null) {
+            return '';
+        }
+        if (typeof misc !== 'object') {
+            return misc;
+        }
+        if (misc instanceof Date) {
+            return misc.getTime();
+        }
+        if (misc instanceof Array) {
+            return getKey(misc);
+        }
+        var str = '';
+        for (var key in misc) {
+            str += '.' + getKeySingle(misc[key]);
+        }
+        return str;
+    }
+})(Args = exports.Args || (exports.Args = {}));

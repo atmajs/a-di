@@ -13,6 +13,8 @@ declare module 'a-di/Di' {
     import { FnEntry } from 'a-di/Entries/FnEntry';
     import { ObjectEntry } from 'a-di/Entries/ObjectEntry';
     import { IType } from 'a-di/Entries/IType';
+    import { deco_param } from 'a-di/deco';
+    type OptionalConstructorParameters<T extends new (...args: any) => any> = T extends new (...args: infer P) => any ? Partial<P> : never;
     export class Di {
         parent: Di;
         static Di: typeof Di;
@@ -26,12 +28,15 @@ declare module 'a-di/Di' {
         new(): Di;
         registerType(Type: IType): TypeEntry<any>;
         registerFactory(Fn: any): FnEntry<any>;
-        Type(Type: IType): TypeEntry<any>;
+        Type(Type: IType): TypeEntry;
         Function<T extends Function>(fn: T): FnEntry<T>;
         Object(object: any): ObjectEntry;
-        resolve<T extends new (...args: any[]) => any>(mix: string | T, ...args: ConstructorParameters<T>): InstanceType<T>;
-        wrapType(Type: any): void;
+        resolve<T extends new (...args: any[]) => any>(mix: string | T, ...args: OptionalConstructorParameters<T>): InstanceType<T>;
+        wrapType<T>(Type: T): T;
+        static param: typeof deco_param;
+        param: typeof deco_param;
     }
+    export {};
 }
 
 declare module 'a-di/Entries/EntryCollection' {
@@ -69,11 +74,13 @@ declare module 'a-di/Entries/TypeEntry' {
     import { Di } from 'a-di/Di';
     export class TypeEntry<T = any> extends BaseMethodEntry {
         Type: IType<T>;
-        protected _singleton: T;
-        constructor(di: Di, Type: IType);
+        constructor(di: Di, Type: IType<T>);
         Entry(): IType<T>;
         resolve(...args: any[]): T;
-        wrap(): T;
+        wrap<TOut = T>(): TOut;
+    }
+    export namespace Args {
+        function getKey(args: any[]): string;
     }
 }
 
@@ -84,7 +91,7 @@ declare module 'a-di/Entries/FnEntry' {
         constructor(di: any, fn: T);
         Entry(): any;
         resolve(...args: any[]): any;
-        wrap(): T;
+        wrap<TOut = T>(): TOut;
     }
 }
 
@@ -108,20 +115,34 @@ declare module 'a-di/Entries/IType' {
     }
 }
 
+declare module 'a-di/deco' {
+    import { IType } from 'a-di/Entries/IType';
+    interface IConstructorParam {
+        Type?: IType;
+        /** Type singleton will be based on such parameter values */
+        singleton?: boolean;
+    }
+    export function deco_param(opts: IConstructorParam): any;
+    export function deco_param(Type: IType): any;
+    export {};
+}
+
 declare module 'a-di/Entries/Entry' {
     import { Di } from 'a-di/Di';
+    import { ITypeMeta } from 'a-di/TypeMeta';
     export abstract class Entry {
         di: Di;
         protected _as: any[];
         protected _using: any[];
         protected _params: any[];
         protected _resolvers: any[];
+        protected _meta: ITypeMeta;
         cfg_arguments: string;
         cfg_singleton: boolean;
         onActivatedCb: any;
         constructor(di: Di);
         config(key: 'arguments', value: 'override' | 'ignore' | 'extend'): any;
-        config(key: 'singleton', value: boolean): any;
+        config(key: 'singleton', value: boolean | 'arguments'): any;
         using(...args: any[]): this;
         isSingleton(val?: boolean): this;
         as(...args: any[]): this;
@@ -130,17 +151,35 @@ declare module 'a-di/Entries/Entry' {
         resolve(...args: any[]): any;
         onActivated(fn: any): void;
         Entry(): any;
-        wrap(): void;
+        abstract wrap<T = any>(): T;
     }
 }
 
 declare module 'a-di/Entries/BaseMethodEntry' {
     import { Entry } from 'a-di/Entries/Entry';
     import { IType } from 'a-di/Entries/IType';
-    export class BaseMethodEntry extends Entry {
-        constructor(di: any, Entry: Function | IType);
+    import { Di } from 'a-di/Di';
+    export abstract class BaseMethodEntry extends Entry {
+        constructor(di: Di, Entry: Function | IType);
         withParams(...args: any[]): this;
         getParams_(...args: any[]): any[];
+    }
+}
+
+declare module 'a-di/TypeMeta' {
+    import { IType } from 'a-di/Entries/IType';
+    export interface IConstructorParam {
+        Type?: IType;
+        /** Type singleton will be based on such parameter values */
+        singleton?: boolean;
+    }
+    export interface ITypeMeta {
+        params: IConstructorParam[];
+        hasSingletonParams: boolean;
+    }
+    export namespace TypeMeta {
+        function defineParam(Ctor: any, opts: IConstructorParam, index: number): void;
+        function prepairMeta(Ctor: any): ITypeMeta;
     }
 }
 

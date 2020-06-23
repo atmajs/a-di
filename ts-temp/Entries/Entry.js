@@ -9,12 +9,13 @@ var Entry = /** @class */ (function () {
         this._using = [];
         this._params = [];
         this._resolvers = [];
+        this._meta = null;
         this.cfg_arguments = const_1.Opts.args.OVERRIDE;
         this.cfg_singleton = true;
         this.onActivatedCb = null;
     }
     Entry.prototype.config = function (key, value) {
-        var prop = 'cfg_' + key;
+        var prop = "cfg_" + key;
         if (this[prop] === void 0) {
             throw new Error('Configuration key is not supported: ' + key);
         }
@@ -22,7 +23,7 @@ var Entry = /** @class */ (function () {
         return this;
     };
     Entry.prototype.using = function () {
-        var _a;
+        var _a, _b;
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -32,7 +33,7 @@ var Entry = /** @class */ (function () {
         while (++i < imax) {
             resolvers[i] = ParamResolver_1.ParamResolver.create(this.di, args[i]);
         }
-        this._resolvers.push.apply(this._resolvers, resolvers);
+        (_b = this._resolvers).push.apply(_b, resolvers);
         return this;
     };
     Entry.prototype.isSingleton = function (val) {
@@ -76,9 +77,6 @@ var Entry = /** @class */ (function () {
         this.onActivatedCb = fn;
     };
     Entry.prototype.Entry = function () {
-        throw new Error('Not implemented');
-    };
-    Entry.prototype.wrap = function () {
         throw new Error('Not implemented');
     };
     return Entry;
