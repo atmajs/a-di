@@ -58,6 +58,7 @@ declare module 'a-di/Entries/EntryCollection' {
         getForType(Type: any): Entry;
         removeForType(Type: any): void;
         removeFor(mix: any): void;
+        removeAll(): void;
         registerFor(mix: any, entry: Entry): void;
     }
 }

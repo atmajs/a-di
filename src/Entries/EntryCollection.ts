@@ -120,6 +120,11 @@ export class EntryCollection {
         }
     }
 
+    removeAll () {
+        this.types = {};
+        this.arr = [];
+    }
+
     registerFor(mix, entry: Entry) {
         if (typeof mix === 'string') {
             this.ids[mix] = entry;
