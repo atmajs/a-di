@@ -1,7 +1,6 @@
 import { Opts } from '../const';
 import { ParamResolver } from '../Params/ParamResolver';
 import { Di } from '../Di'
-import { IType } from './IType';
 import { ITypeMeta } from '../TypeMeta';
 
 export abstract class Entry {

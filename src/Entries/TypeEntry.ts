@@ -44,6 +44,8 @@ export class TypeEntry<T = any> extends BaseMethodEntry {
             if (this._singletons.has(paramsKey)) {
                 return this._singletons.get(paramsKey);
             }
+        } else if (args.length > 0) {
+            paramsKey = Args.getKey(args);
         }
 
         //new (Function.prototype.bind.apply(Ctor, [null].concat(params)))();

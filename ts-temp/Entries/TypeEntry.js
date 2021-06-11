@@ -62,6 +62,9 @@ var TypeEntry = /** @class */ (function (_super) {
                 return this._singletons.get(paramsKey);
             }
         }
+        else if (args.length > 0) {
+            paramsKey = Args.getKey(args);
+        }
         //new (Function.prototype.bind.apply(Ctor, [null].concat(params)))();
         var instance = new (Ctor.bind.apply(Ctor, __spreadArrays([void 0], params)))();
         if (this.cfg_singleton === true) {
