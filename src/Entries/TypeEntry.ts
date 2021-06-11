@@ -70,6 +70,7 @@ export class TypeEntry<T = any> extends BaseMethodEntry {
 
 export namespace Args {
     const WARN_KEY_LENGTH = 1024;
+    const MAX_LEVEL = 2;
     export function getKey(args: any[]) {
         let key = '';
         for (let i = 0; i < args.length; i++) {
@@ -80,7 +81,7 @@ export namespace Args {
         }
         return key;
     }
-    function getKeySingle (misc: any) {
+    function getKeySingle (misc: any, level = 0) {
         if (misc == null) {
             return '';
         }
@@ -93,9 +94,13 @@ export namespace Args {
         if (misc instanceof Array) {
             return getKey(misc);
         }
+        if (level >= MAX_LEVEL) {
+            return `l_${level}`;
+        }
+
         let str = '';
         for (let key in misc) {
-            str += '.' + getKeySingle(misc[key]);
+            str += '.' + getKeySingle(misc[key], level + 1);
         }
         return str;
     }
