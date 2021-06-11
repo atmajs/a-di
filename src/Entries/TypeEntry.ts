@@ -82,7 +82,7 @@ export namespace Args {
         return key;
     }
     function getKeySingle (misc: any, level = 0) {
-        if (misc == null) {
+        if (misc == null || typeof misc === 'function') {
             return '';
         }
         if (typeof misc !== 'object') {
@@ -100,7 +100,11 @@ export namespace Args {
 
         let str = '';
         for (let key in misc) {
-            str += '.' + getKeySingle(misc[key], level + 1);
+            let val = misc[key];
+            let partial = getKeySingle(val, level + 1);
+            if (partial != null && partial !== '') {
+                str += '.' + partial;
+            }
         }
         return str;
     }

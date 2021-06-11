@@ -109,7 +109,7 @@ var Args;
     Args.getKey = getKey;
     function getKeySingle(misc, level) {
         if (level === void 0) { level = 0; }
-        if (misc == null) {
+        if (misc == null || typeof misc === 'function') {
             return '';
         }
         if (typeof misc !== 'object') {
@@ -126,7 +126,11 @@ var Args;
         }
         var str = '';
         for (var key in misc) {
-            str += '.' + getKeySingle(misc[key], level + 1);
+            var val = misc[key];
+            var partial = getKeySingle(val, level + 1);
+            if (partial != null && partial !== '') {
+                str += '.' + partial;
+            }
         }
         return str;
     }
