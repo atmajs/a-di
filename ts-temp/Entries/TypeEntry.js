@@ -95,13 +95,14 @@ var Args;
 (function (Args) {
     var WARN_KEY_LENGTH = 1024;
     var MAX_LEVEL = 2;
-    function getKey(args) {
+    function getKey(args, level) {
+        if (level === void 0) { level = 0; }
         var key = '';
         for (var i = 0; i < args.length; i++) {
-            key += '.' + getKeySingle(args[i]);
+            key += '.' + getKeySingle(args[i], level);
         }
         if (key.length > WARN_KEY_LENGTH) {
-            console.error("DI: Singleton by arguments has the keylength of " + key.length + "c. Consider to use lightweight objects.");
+            console.error("DI: Singleton by arguments has the keylength of " + key.length + "c. Consider to use lightweight objects. " + key);
         }
         return key;
     }
@@ -118,7 +119,7 @@ var Args;
             return misc.getTime();
         }
         if (misc instanceof Array) {
-            return getKey(misc);
+            return getKey(misc, level);
         }
         if (level >= MAX_LEVEL) {
             return "l_" + level;

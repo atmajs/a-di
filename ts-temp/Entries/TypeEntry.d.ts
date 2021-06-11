@@ -11,5 +11,5 @@ export declare class TypeEntry<T = any> extends BaseMethodEntry {
     wrap<TOut = T>(): TOut;
 }
 export declare namespace Args {
-    function getKey(args: any[]): string;
+    function getKey(args: any[], level?: number): string;
 }

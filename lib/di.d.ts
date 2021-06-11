@@ -81,7 +81,7 @@ declare module 'a-di/Entries/TypeEntry' {
         wrap<TOut = T>(): TOut;
     }
     export namespace Args {
-        function getKey(args: any[]): string;
+        function getKey(args: any[], level?: number): string;
     }
 }
 

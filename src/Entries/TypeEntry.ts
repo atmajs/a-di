@@ -71,13 +71,13 @@ export class TypeEntry<T = any> extends BaseMethodEntry {
 export namespace Args {
     const WARN_KEY_LENGTH = 1024;
     const MAX_LEVEL = 2;
-    export function getKey(args: any[]) {
+    export function getKey(args: any[], level = 0) {
         let key = '';
         for (let i = 0; i < args.length; i++) {
-            key += '.' + getKeySingle(args[i]);
+            key += '.' + getKeySingle(args[i], level);
         }
         if (key.length > WARN_KEY_LENGTH) {
-            console.error(`DI: Singleton by arguments has the keylength of ${key.length}c. Consider to use lightweight objects.`)
+            console.error(`DI: Singleton by arguments has the keylength of ${key.length}c. Consider to use lightweight objects. ${key}`)
         }
         return key;
     }
@@ -92,7 +92,7 @@ export namespace Args {
             return misc.getTime();
         }
         if (misc instanceof Array) {
-            return getKey(misc);
+            return getKey(misc, level);
         }
         if (level >= MAX_LEVEL) {
             return `l_${level}`;
