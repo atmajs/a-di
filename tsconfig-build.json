@@ -10,7 +10,7 @@
             "typings/globals",
             "typings-other"
         ],
-        "types": ["node", "assertion", "atma-utest", "jquery"],
+        "types": ["node"],
         "declaration": true,
         "target": "es5",
         "module": "commonjs",

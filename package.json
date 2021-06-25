@@ -1,18 +1,18 @@
 {
     "name": "a-di",
-    "version": "1.0.18",
+    "version": "1.0.20",
     "description": "Dependency injection library for Javascript/Typescript",
     "main": "lib/di.js",
     "directories": {
         "test": "test"
     },
     "scripts": {
-        "test-server": "atma server --TEST",
+        "server": "atma server --TEST",
         "test": "atma test",
         "bundle": "app-bundler",
         "watch": "app-bundler --watch",
         "build": "npm run bundle && npm run dts",
-        "server": "atma server",
+        "-server": "atma server",
         "dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
         "release": "echo \"Run atma pub -m \"message\"\""
     },
@@ -36,9 +36,9 @@
         "@types/node": "^13.7.1",
         "@types/sinon": "^9.0.0",
         "app-bundler": "0.0.82",
-        "atma": "^0.12.19",
+        "atma": "^0.12.33",
         "atma-io": "^1.2.29",
-        "atma-loader-ts": "^1.1.12",
+        "atma-loader-ts": "^1.1.15",
         "maskjs": "^0.57.2",
         "sinon": "^9.0.1"
     },

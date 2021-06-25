@@ -11,15 +11,15 @@ before_script:
   - sleep 5
   - npm run bundle &
   - sleep 8
-  - npm run test-server &
+  - npm run server &
   - sleep 5
   - firefox http://localhost:5777/utest/ &
   - sleep 8
- 
+
 script:
-  - "npm test"
+  - npm test
 
 language: node_js
 
 node_js:
-  - "10.1.0"
+  - 16
