@@ -1,0 +1,435 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>a-di</title>
+	<meta name="description" content="Documentation for a-di">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">a-di</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>a-di</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p align='center'>
+					<img src='assets/logo.png'/>
+				</p>
+				<p align="center">
+					<a href='https://travis-ci.org/tenbits/a-di' target='_blank'>
+						<img src='https://travis-ci.org/tenbits/a-di.png?branch=master' />
+					</a>
+					<a href='http://badge.fury.io/js/a-di' target='_blank'>
+						<img src='https://badge.fury.io/js/a-di.svg' />
+					</a>
+					<a href='http://badge.fury.io/bo/a-di' target='_blank'>
+						<img src='https://badge.fury.io/bo/a-di.svg' />
+					</a>
+				</p>
+				<a href="#yet-another-dependency-injection-library-for-javascript" id="yet-another-dependency-injection-library-for-javascript" style="color: inherit; text-decoration: none;">
+					<h1>Yet another Dependency Injection Library for JavaScript</h1>
+				</a>
+				<p><em>Highly inspired by <a href="https://autofac.org/">Autofac.NET</a></em></p>
+				<blockquote>
+					<p>We have tried to accommodate all the best DI and IoC  practices for JavaScript</p>
+				</blockquote>
+				<p><code>var di = new Di;</code></p>
+				<a href="#9776" id="9776" style="color: inherit; text-decoration: none;">
+					<h5>&#9776;</h5>
+				</a>
+				<ul>
+					<li><p><code>1</code> <a href="#1-registration">Registration</a></p>
+						<ul>
+							<li><code>1.1</code> <a href="#11-type">Type</a></li>
+							<li><code>1.2</code> <a href="#12-instance">Instance</a></li>
+							<li><code>1.3</code> <a href="#12-factory">Factory</a></li>
+						</ul>
+					</li>
+					<li><p><code>2</code> <a href="#2-dependency-defintions">Dependency definitions</a></p>
+						<ul>
+							<li><code>2.1</code> <a href="#21-constructor">Constructor</a><ul>
+									<li><code>2.1.1</code> <a href="#211-external-definitions">External definitions</a></li>
+									<li><code>2.1.2</code> <a href="#212-inplace-meta-information">In-place meta information</a></li>
+									<li><code>2.1.3</code> <a href="#213-other-ways"><em>Other ways</em></a></li>
+								</ul>
+							</li>
+							<li><code>2.2</code> <a href="#22-properties">Properties</a></li>
+							<li><code>2.3</code> <a href="#23-methods">Methods</a></li>
+						</ul>
+					</li>
+					<li><p><code>3</code> <a href="#3-Consume">Consume</a></p>
+						<ul>
+							<li><code>3.1</code> <a href="#31-Initialize-registered-components">Initialize registered components</a></li>
+							<li><code>3.2</code> <a href="#32-create-inherited-classes">Create inherited classes</a></li>
+							<li><code>3.3</code> [Create function delegates](#33-create function delegates)</li>
+						</ul>
+					</li>
+					<li><p><code>4</code> <a href="#3-additional-configuration">Addition configuration</a></p>
+					</li>
+				</ul>
+				<a href="#1-registration" id="1-registration" style="color: inherit; text-decoration: none;">
+					<h1><code>1</code> Registration</h1>
+				</a>
+				<blockquote>
+					<p>The greates challenge for DI frameworks in JavaScript is to get the list of dependencies for a constructor, method, etc. JavaScript is not statically typed, so here other ways should be found to declare the dependencies. And we also try to follow the <em><strong>1st rule</strong></em> of any di framework - <code>&quot;Your classes should not be dependent on the DI itself&quot;</code>.</p>
+				</blockquote>
+				<blockquote>
+					<p>Though you can use it as a <strong>Service Locator</strong> </p>
+				</blockquote>
+				<p>When registering the component, we specify identifiers, by which the dependency is resolved. It can be some another <code>Type</code>, string identifier, <code>self-type</code>. <em>But we do not encourage you to use string identifiers.</em></p>
+				<p>It is also possible to get the instance without having previously to register the Type</p>
+				<pre><code class="language-ts"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">foo</span><span style="color: #000000"> = </span><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">);</span>
+</code></pre>
+				<blockquote>
+					<p>Later you can register another Type for this one.</p>
+				</blockquote>
+				<a href="#11-type" id="11-type" style="color: inherit; text-decoration: none;">
+					<h3><code>1.1</code> Type</h3>
+				</a>
+				<p>A <code>Type</code> in JavaScript we call a <code>Class</code> or a <code>Function</code>, as almost any <em><code>function</code></em> can be used as a contructor for an instance. </p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> { </span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">bar</span><span style="color: #000000">, </span><span style="color: #001080">qux</span><span style="color: #000000">) {}</span>
+<span style="color: #000000">}</span>
+<span style="color: #008000">// ----</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">using</span><span style="color: #000000">(</span><span style="color: #001080">IBar</span><span style="color: #000000">, </span><span style="color: #001080">IQux</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;foo&#039;</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">asSelf</span><span style="color: #000000">()</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">onActivated</span><span style="color: #000000">(</span><span style="color: #001080">foo</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">foo</span><span style="color: #000000">));</span>
+</code></pre>
+				<a href="#12-instance" id="12-instance" style="color: inherit; text-decoration: none;">
+					<h3><code>1.2</code> Instance</h3>
+				</a>
+				<p>Pass already instantiated class to the container, and it will be used by all dependents</p>
+				<pre><code class="language-javascript"><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">registerInstance</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Foo</span><span style="color: #000000">(</span><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #001080">IBar</span><span style="color: #000000">), </span><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #001080">IQux</span><span style="color: #000000">))).</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">// or use Initializer wich will be called on first `IFoo` require.</span>
+<span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">registerInstance</span><span style="color: #000000">(</span><span style="color: #001080">IBar</span><span style="color: #000000">, </span><span style="color: #001080">IFoo</span><span style="color: #000000">, (</span><span style="color: #001080">bar</span><span style="color: #000000">, </span><span style="color: #001080">foo</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Foo</span><span style="color: #000000">(</span><span style="color: #001080">bar</span><span style="color: #000000">, </span><span style="color: #001080">foo</span><span style="color: #000000">)).</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">// you can even suppress the lamda here</span>
+<span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">registerInstance</span><span style="color: #000000">(</span><span style="color: #001080">IBar</span><span style="color: #000000">, </span><span style="color: #001080">IFoo</span><span style="color: #000000">, </span><span style="color: #001080">Foo</span><span style="color: #000000">).</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">);</span>
+</code></pre>
+				<a href="#13-factory" id="13-factory" style="color: inherit; text-decoration: none;">
+					<h3><code>1.3</code> Factory</h3>
+				</a>
+				<p>Register a <code>function</code> which will create the instance on demand. Is similar to instance initializer, but the factory is called every time the dependency is required.</p>
+				<pre><code class="language-javascript"><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">registerFactory</span><span style="color: #000000">(</span><span style="color: #001080">IBar</span><span style="color: #000000">, (</span><span style="color: #001080">bar</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {}).</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">// No arguments are defined - we pass the di itself, for the case your factory method is out of the current di scope.</span>
+<span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">registerFactory</span><span style="color: #000000">(</span><span style="color: #001080">di</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {}).</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">);</span>
+</code></pre>
+				<hr>
+				<a href="#2-dependency-defintions" id="2-dependency-defintions" style="color: inherit; text-decoration: none;">
+					<h1><code>2</code> Dependency defintions</h1>
+				</a>
+				<a href="#21-constructor" id="21-constructor" style="color: inherit; text-decoration: none;">
+					<h3><code>2.1</code> Constructor</h3>
+				</a>
+				<p><em>Under <code>Constructor</code> also plain Functions are meant.</em></p>
+				<a href="#211-external-definitions" id="211-external-definitions" style="color: inherit; text-decoration: none;">
+					<h4><code>2.1.1</code> External definitions</h4>
+				</a>
+				<p>From the previous paragraph you have already seen <code>using</code> method, when registering the <code>Type</code>. Here we say the di library what identifiers should be used to instantiate the arguments.</p>
+				<blockquote>
+					<p>:sparkles: <strong>Pros</strong>: Your implementation is fully decoupled from the DI and the registration iteself.</p>
+				</blockquote>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">logger</span><span style="color: #000000">) { </span><span style="color: #001080">logger</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">() }</span>
+<span style="color: #000000">}</span>
+<span style="color: #008000">// ----</span>
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Bar</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">log</span><span style="color: #000000"> (...</span><span style="color: #001080">args</span><span style="color: #000000">) { </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(...</span><span style="color: #001080">args</span><span style="color: #000000">) }</span>
+<span style="color: #000000">}</span>
+<span style="color: #008000">// ---</span>
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">ILog</span><span style="color: #000000"> { </span><span style="color: #795E26">log</span><span style="color: #000000"> () {} }</span>
+<span style="color: #008000">// ---</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Bar</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">ILog</span><span style="color: #000000">);</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">using</span><span style="color: #000000">(</span><span style="color: #001080">ILog</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">asSelf</span><span style="color: #000000">();</span>
+</code></pre>
+				<a href="#212-in-place-meta-information" id="212-in-place-meta-information" style="color: inherit; text-decoration: none;">
+					<h4><code>2.1.2</code> In-place meta information</h4>
+				</a>
+				<blockquote>
+					<p>:sparkles: <strong>Pros</strong>: Your implementation is decoupled from the DI, but holds meta information for the DI library.</p>
+				</blockquote>
+				<p>Per default we read the static <code>$inject</code> property on the <code>Type</code></p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">logger</span><span style="color: #000000">) { </span><span style="color: #001080">logger</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">() }</span>
+<span style="color: #000000">}</span>
+<span style="color: #001080">Foo</span><span style="color: #000000">.</span><span style="color: #001080">$constructor</span><span style="color: #000000"> = [</span><span style="color: #001080">ILog</span><span style="color: #000000">];</span>
+<span style="color: #008000">// ----</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">asSelf</span><span style="color: #000000">();</span>
+
+</code></pre>
+				<p>You can override the reader and provide us with the Identifiers for injection.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">CustomMetaReader</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">getConstructor</span><span style="color: #000000"> (</span><span style="color: #001080">Type</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">Type</span><span style="color: #000000">.</span><span style="color: #001080">$inject</span><span style="color: #000000">;</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">};</span>
+<span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">defineMetaReader</span><span style="color: #000000">(</span><span style="color: #001080">CustomMetaReader</span><span style="color: #000000">);</span>
+<span style="color: #008000">// ----</span>
+<span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">logger</span><span style="color: #000000">) { </span><span style="color: #001080">logger</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">() }</span>
+<span style="color: #000000">}</span>
+<span style="color: #001080">Foo</span><span style="color: #000000">.</span><span style="color: #001080">$inject</span><span style="color: #000000"> = [</span><span style="color: #001080">ILog</span><span style="color: #000000">];</span>
+</code></pre>
+				<a href="#213-other-ways" id="213-other-ways" style="color: inherit; text-decoration: none;">
+					<h4><code>2.1.3</code> <em>Other ways</em></h4>
+				</a>
+				<p>Under the considiration are some other ways, like decorators from ES7, but it makes then your <code>class</code> implementation to depend on <code>di</code> library and its decorator. </p>
+				<p>:bulb: Do you have any ideas? Please share them via issues.</p>
+				<blockquote>
+					<p><strong>TypeScript</strong>: initially, this project targets plain JavaScript, but TypeScript support will be also implemented.</p>
+				</blockquote>
+				<a href="#22-properties" id="22-properties" style="color: inherit; text-decoration: none;">
+					<h3><code>2.2</code> Properties</h3>
+				</a>
+				<p>Property injections are supported by <code>Type</code><em>s</em> components.</p>
+				<a href="#221-external-definitions" id="221-external-definitions" style="color: inherit; text-decoration: none;">
+					<h4><code>2.2.1</code> External definitions</h4>
+				</a>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> () { </span>
+<span style="color: #000000">        </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">logger</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DummyLogger</span><span style="color: #000000">();</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">    </span><span style="color: #795E26">doSmth</span><span style="color: #000000"> () {        </span>
+<span style="color: #000000">        </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">logger</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">();</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+<span style="color: #008000">// ---</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">properties</span><span style="color: #000000">({</span>
+<span style="color: #000000">        </span><span style="color: #008000">// DummyLogger will be replaced with the registration for ILog</span>
+<span style="color: #000000">        </span><span style="color: #001080">logger:</span><span style="color: #000000"> </span><span style="color: #001080">ILog</span>
+<span style="color: #000000">    })</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">asSelf</span><span style="color: #000000">();</span>
+</code></pre>
+				<a href="#222-in-place-meta-information" id="222-in-place-meta-information" style="color: inherit; text-decoration: none;">
+					<h4><code>2.2.2</code> In-place meta information</h4>
+				</a>
+				<p>Per default we read the static <code>$properties</code> to get the <code>key: Identifier</code> information.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> () { }</span>
+<span style="color: #000000">}</span>
+<span style="color: #001080">Foo</span><span style="color: #000000">.</span><span style="color: #001080">$properties</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #001080">logger:</span><span style="color: #000000"> </span><span style="color: #001080">ILog</span>
+<span style="color: #000000">};</span>
+<span style="color: #008000">// ----</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">asSelf</span><span style="color: #000000">();</span>
+
+</code></pre>
+				<p>You can override the reader and provide us with the Identifiers for injection.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">CustomMetaReader</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">getProperties</span><span style="color: #000000"> (</span><span style="color: #001080">Type</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #008000">// return hash with {key: Identifier}</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">};</span>
+<span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">defineMetaReader</span><span style="color: #000000">(</span><span style="color: #001080">CustomMetaReader</span><span style="color: #000000">);</span>
+</code></pre>
+				<a href="#223-other-ways" id="223-other-ways" style="color: inherit; text-decoration: none;">
+					<h4><code>2.2.3</code> <em>Other ways</em></h4>
+				</a>
+				<p>:bulb: Ideas about better API - please share!</p>
+				<hr>
+				<a href="#23-methods" id="23-methods" style="color: inherit; text-decoration: none;">
+					<h3><code>2.3</code> Methods</h3>
+				</a>
+				<p>Injections into <code>Type</code>_s_functions.</p>
+				<a href="#231-external-definitions" id="231-external-definitions" style="color: inherit; text-decoration: none;">
+					<h4><code>2.3.1</code> External definitions</h4>
+				</a>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">doSmth</span><span style="color: #000000"> (</span><span style="color: #001080">logger</span><span style="color: #000000">) {        </span>
+<span style="color: #000000">        </span><span style="color: #001080">logger</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">();</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">}</span>
+<span style="color: #008000">// ---</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">methods</span><span style="color: #000000">({</span>
+<span style="color: #000000">        </span><span style="color: #008000">// The method on an instance can be the called without any arguments</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Di will provide required dependencies to the inner function</span>
+<span style="color: #000000">        </span><span style="color: #001080">doSmth:</span><span style="color: #000000"> [</span><span style="color: #001080">ILog</span><span style="color: #000000">]</span>
+<span style="color: #000000">    })</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">asSelf</span><span style="color: #000000">();</span>
+</code></pre>
+				<a href="#232-in-place-meta-information" id="232-in-place-meta-information" style="color: inherit; text-decoration: none;">
+					<h4><code>2.3.2</code> In-place meta information</h4>
+				</a>
+				<p>Per default we read the static <code>$methods</code> with <code>key:[Identifier, ...]</code> information.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">doSmth</span><span style="color: #000000"> (</span><span style="color: #001080">logger</span><span style="color: #000000">) { </span><span style="color: #001080">logger</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">() }</span>
+<span style="color: #000000">}</span>
+<span style="color: #001080">Foo</span><span style="color: #000000">.</span><span style="color: #001080">$methods</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #001080">doSmth:</span><span style="color: #000000"> [</span><span style="color: #001080">ILog</span><span style="color: #000000">]</span>
+<span style="color: #000000">};</span>
+<span style="color: #008000">// ----</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">asSelf</span><span style="color: #000000">();</span>
+
+</code></pre>
+				<p>You can override the reader and provide us with the Identifiers for injection.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">CustomMetaReader</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">getMethods</span><span style="color: #000000"> (</span><span style="color: #001080">Type</span><span style="color: #000000">) {</span>
+<span style="color: #000000">        </span><span style="color: #008000">// return hash with {key: [Identifier, ...]}</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">};</span>
+<span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">defineMetaReader</span><span style="color: #000000">(</span><span style="color: #001080">CustomMetaReader</span><span style="color: #000000">);</span>
+</code></pre>
+				<a href="#233-other-ways" id="233-other-ways" style="color: inherit; text-decoration: none;">
+					<h4><code>2.3.3</code> <em>Other ways</em></h4>
+				</a>
+				<p>:bulb: Ideas about better API - please share!</p>
+				<hr>
+				<a href="#3-consume" id="3-consume" style="color: inherit; text-decoration: none;">
+					<h1><code>3</code> Consume</h1>
+				</a>
+				<a href="#31-initialize-registered-components" id="31-initialize-registered-components" style="color: inherit; text-decoration: none;">
+					<h3><code>3.1</code> Initialize registered components</h3>
+				</a>
+				<p>We inject all dependencies and return ready to use component.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">x</span><span style="color: #000000"> = </span><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">);</span>
+</code></pre>
+				<a href="#32-create-inherited-classes" id="32-create-inherited-classes" style="color: inherit; text-decoration: none;">
+					<h3><code>3.2</code> Create inherited classes</h3>
+				</a>
+				<p>The inherited class accepts empty constructor, in this case we will pass the resolved components to the base class.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">FooWrapper</span><span style="color: #000000"> = </span><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">wrapType</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">foo</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">FooWrapper</span><span style="color: #000000">();</span>
+</code></pre>
+				<a href="#33-create-function-delegates" id="33-create-function-delegates" style="color: inherit; text-decoration: none;">
+					<h3><code>3.3</code> Create function delegates</h3>
+				</a>
+				<p>Define function argument identifiers, and you can call the function without arguments.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">myFunction</span><span style="color: #000000"> = </span><span style="color: #001080">di</span><span style="color: #000000">.</span><span style="color: #795E26">wrapFunction</span><span style="color: #000000">(</span><span style="color: #001080">IFoo</span><span style="color: #000000">, </span><span style="color: #001080">IBar</span><span style="color: #000000">, (</span><span style="color: #001080">foo</span><span style="color: #000000">, </span><span style="color: #001080">bar</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {});</span>
+<span style="color: #795E26">myFunction</span><span style="color: #000000">();</span>
+</code></pre>
+				<hr>
+				<a href="#4-additional-configuration" id="4-additional-configuration" style="color: inherit; text-decoration: none;">
+					<h1><code>4</code> Additional configuration</h1>
+				</a>
+				<a href="#41-predefine-parameter-values" id="41-predefine-parameter-values" style="color: inherit; text-decoration: none;">
+					<h3><code>4.1</code> Predefine parameter values</h3>
+				</a>
+				<p>Sometimes it is needed to set values for parameters, which will be directly passed inside the function.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Foo</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">constructor</span><span style="color: #000000"> (</span><span style="color: #001080">bar</span><span style="color: #000000">, </span><span style="color: #001080">shouldDoSmth</span><span style="color: #000000">)</span>
+<span style="color: #000000">}</span>
+<span style="color: #001080">di</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">registerType</span><span style="color: #000000">(</span><span style="color: #001080">Foo</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">using</span><span style="color: #000000">(</span><span style="color: #001080">Bar</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">withParams</span><span style="color: #000000">(</span><span style="color: #0000FF">null</span><span style="color: #000000">, </span><span style="color: #0000FF">true</span><span style="color: #000000">)</span>
+</code></pre>
+				<blockquote>
+					<p>:one: Passing null values says the di library to resolve values from container by declared Type</p>
+				</blockquote>
+				<blockquote>
+					<p>:two: Boolean <code>true</code> from sample just shows the idea of passing values. You may want to get the value from app configuration or some other source.  </p>
+				</blockquote>
+				<a href="#42-configurate-arguments" id="42-configurate-arguments" style="color: inherit; text-decoration: none;">
+					<h3><code>4.2</code> Configurate arguments</h3>
+				</a>
+				<p>Arguments <em>or values</em> for a constructor/function are resolved from 3 sources:</p>
+				<ul>
+					<li>Declared parameter values</li>
+					<li>Type definitions</li>
+					<li>Direct values from the current function call.</li>
+				</ul>
+				<p>With options <code>&quot;ignore&quot; &quot;extend&quot; &quot;override&quot;</code> you can control how we handle the third source. Default is <code>&quot;override&quot;</code></p>
+				<p>:checkered_flag:</p>
+				<hr>
+				<p>:copyright: MIT - 2017 Atma.js Project</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-variable">
+						<a href="modules.html#export_" class="tsd-kind-icon">export&#61;</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

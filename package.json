@@ -14,7 +14,8 @@
         "build": "npm run bundle && npm run dts",
         "-server": "atma server",
         "dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
-        "release": "echo \"Run atma pub -m \"message\"\""
+        "release": "echo \"Run atma pub -m \"message\"\"",
+        "typedoc": "typedoc"
     },
     "repository": {
         "type": "git",
@@ -35,12 +36,14 @@
     "devDependencies": {
         "@types/node": "^13.7.1",
         "@types/sinon": "^9.0.0",
+        "@types/jquery": "^3.5.6",
         "app-bundler": "0.0.82",
         "atma": "^0.12.33",
         "atma-io": "^1.2.29",
         "atma-loader-ts": "^1.1.15",
         "maskjs": "^0.57.2",
-        "sinon": "^9.0.1"
+        "sinon": "^9.0.1",
+        "typedoc": "^0.21.4"
     },
     "app-bundler": {
         "file": "src/exports.ts",

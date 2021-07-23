@@ -1,4 +1,4 @@
-import { obj_extend } from '@utils/obj';
+import { ObjUtil } from './obj';
 
 const ENV_CLASS = (function () {
     try {
@@ -84,7 +84,7 @@ const polyfill_class_wrap_inner = (function () {
                     afterFn.apply(this, args);
                 }
             };
-            obj_extend(Wrapped.prototype, Base.prototype);
+            ObjUtil.extend(Wrapped.prototype, Base.prototype);
             return Wrapped;
         };
     }
@@ -152,5 +152,5 @@ function directCaller (fn, self, args) {
 }
 function newCaller (fn, self, args) {
     var x = new (fn.bind.apply(fn, [null].concat(args)));
-    obj_extend(self, x);
+    ObjUtil.extend(self, x);
 }
