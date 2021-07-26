@@ -38,11 +38,11 @@ _Highly inspired by [Autofac.NET](https://autofac.org/)_
 - `3` [Consume](#3-Consume)
     - `3.1` [Initialize registered components](#31-Initialize-registered-components)
     - `3.2` [Create inherited classes](#32-create-inherited-classes)
-    - `3.3` [Create function delegates](#33-create function delegates)
+    - `3.3` [Create function delegates](#33-create function-delegates)
 
 - `4` [Additional configuration](#4-additional-configuration)
 
-- `5` [How do we use the library?](#5-How-do-we-use-the-library)
+- `5` [How do we use the library?](#5-how-do-we-use-the-library)
 
 # `1` Registration
 
