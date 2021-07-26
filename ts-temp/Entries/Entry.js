@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Entry = void 0;
 var const_1 = require("../const");
 var ParamResolver_1 = require("../Params/ParamResolver");
 var Entry = /** @class */ (function () {
@@ -29,7 +30,9 @@ var Entry = /** @class */ (function () {
             args[_i] = arguments[_i];
         }
         (_a = this._using).push.apply(_a, args);
-        var resolvers = new Array(args.length), imax = args.length, i = -1;
+        var resolvers = new Array(args.length);
+        var imax = args.length;
+        var i = -1;
         while (++i < imax) {
             resolvers[i] = ParamResolver_1.ParamResolver.create(this.di, args[i]);
         }
@@ -40,6 +43,13 @@ var Entry = /** @class */ (function () {
         if (val === void 0) { val = true; }
         this.cfg_singleton = val;
         return this;
+    };
+    Entry.prototype.for = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return this.as.apply(this, args);
     };
     Entry.prototype.as = function () {
         var _a;

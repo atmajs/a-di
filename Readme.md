@@ -18,9 +18,9 @@
 
 _Highly inspired by [Autofac.NET](https://autofac.org/)_
 
-> We have tried to accommodate all the best DI and IoC  practices for JavaScript
+> We have tried to accommodate all the best DI and IoC practices for JavaScript
 
-`var di = new Di;`
+`const di = new Di;`
 
 ##### &#9776;
 
@@ -40,14 +40,15 @@ _Highly inspired by [Autofac.NET](https://autofac.org/)_
     - `3.2` [Create inherited classes](#32-create-inherited-classes)
     - `3.3` [Create function delegates](#33-create function delegates)
 
-- `4` [Addition configuration](#3-additional-configuration)
+- `4` [Additional configuration](#4-additional-configuration)
 
+- `5` [How do we use the library?](#5-How-do-we-use-the-library)
 
 # `1` Registration
 
-> The greates challenge for DI frameworks in JavaScript is to get the list of dependencies for a constructor, method, etc. JavaScript is not statically typed, so here other ways should be found to declare the dependencies. And we also try to follow the _**1st rule**_ of any di framework - `"Your classes should not be dependent on the DI itself"`.
+> The greatest challenge for DI frameworks in JavaScript is to get the list of dependencies for a constructor, method, etc. JavaScript is not statically typed, so here other ways should be found to declare the dependencies. And we also try to follow the _**1st rule**_ of any di framework - `"Your classes should not be dependent on the DI itself"`.
 
-> Though you can use it as a **Service Locator** 
+> Though you can use it as a **Service Locator**
 
 When registering the component, we specify identifiers, by which the dependency is resolved. It can be some another `Type`, string identifier, `self-type`. _But we do not encourage you to use string identifiers._
 
@@ -61,11 +62,11 @@ const foo = di.resolve(Foo);
 
 ### `1.1` Type
 
-A `Type` in JavaScript we call a `Class` or a `Function`, as almost any _`function`_ can be used as a contructor for an instance. 
+A `Type` in JavaScript we call a `Class` or a `Function`, as almost any _`function`_ can be used as a constructor for an instance.
 
 
 ```javascript
-class Foo { 
+class Foo {
     constructor (bar, qux) {}
 }
 // ----
@@ -104,7 +105,7 @@ di.registerFactory(di => {}).as(IFoo);
 
 ---
 
-# `2` Dependency defintions
+# `2` Dependency definitions
 
 ### `2.1` Constructor
 
@@ -114,7 +115,7 @@ _Under `Constructor` also plain Functions are meant._
 
 From the previous paragraph you have already seen `using` method, when registering the `Type`. Here we say the di library what identifiers should be used to instantiate the arguments.
 
-> :sparkles: **Pros**: Your implementation is fully decoupled from the DI and the registration iteself.
+> :sparkles: **Pros**: Your implementation is fully decoupled from the DI and the registration itself.
 
 ```javascript
 class Foo {
@@ -145,6 +146,8 @@ Per default we read the static `$inject` property on the `Type`
 ```javascript
 class Foo {
     constructor (logger) { logger.log() }
+
+    static $constructor = [ ILog ]
 }
 Foo.$constructor = [ILog];
 // ----
@@ -157,7 +160,7 @@ di
 You can override the reader and provide us with the Identifiers for injection.
 
 ```javascript
-var CustomMetaReader = {
+let CustomMetaReader = {
     getConstructor (Type) {
         return Type.$inject;
     }
@@ -172,9 +175,9 @@ Foo.$inject = [ILog];
 
 #### `2.1.3` _Other ways_
 
-Under the considiration are some other ways, like decorators from ES7, but it makes then your `class` implementation to depend on `di` library and its decorator. 
+Under the consideration are some other ways, like decorators from ES7, but it makes then your `class` implementation to depend on `di` library and its decorator.
 
-:bulb: Do you have any ideas? Please share them via issues.
+💬 Do you have any ideas? Please share them via issues.
 
 > **TypeScript**: initially, this project targets plain JavaScript, but TypeScript support will be also implemented.
 
@@ -188,10 +191,10 @@ Property injections are supported by `Type`_s_ components.
 
 ```javascript
 class Foo {
-    constructor () { 
+    constructor () {
         this.logger = new DummyLogger();
     }
-    doSmth () {        
+    doSmth () {
         this.logger.log();
     }
 }
@@ -226,7 +229,7 @@ di
 You can override the reader and provide us with the Identifiers for injection.
 
 ```javascript
-var CustomMetaReader = {
+let CustomMetaReader = {
     getProperties (Type) {
         // return hash with {key: Identifier}
     }
@@ -236,7 +239,7 @@ di.defineMetaReader(CustomMetaReader);
 
 #### `2.2.3` _Other ways_
 
-:bulb: Ideas about better API - please share!
+💬 Ideas about better API - please share!
 
 
 ----
@@ -250,7 +253,7 @@ Injections into `Type`_s_functions.
 
 ```javascript
 class Foo {
-    doSmth (logger) {        
+    doSmth (logger) {
         logger.log();
     }
 }
@@ -259,7 +262,7 @@ di
     .registerType(Foo)
     .methods({
         // The method on an instance can be the called without any arguments
-	// Di will provide required dependencies to the inner function
+        // Di will provide required dependencies to the inner function
         doSmth: [ILog]
     })
     .asSelf();
@@ -272,10 +275,11 @@ Per default we read the static `$methods` with `key:[Identifier, ...]` informati
 ```javascript
 class Foo {
     doSmth (logger) { logger.log() }
+
+    static $methods = {
+        doSmth: [ ILog ]
+    };
 }
-Foo.$methods = {
-    doSmth: [ILog]
-};
 // ----
 di
     .registerType(Foo)
@@ -286,7 +290,7 @@ di
 You can override the reader and provide us with the Identifiers for injection.
 
 ```javascript
-var CustomMetaReader = {
+const CustomMetaReader = {
     getMethods (Type) {
         // return hash with {key: [Identifier, ...]}
     }
@@ -296,7 +300,7 @@ di.defineMetaReader(CustomMetaReader);
 
 #### `2.3.3` _Other ways_
 
-:bulb: Ideas about better API - please share!
+💬 Ideas about better API - please share!
 
 ---
 
@@ -307,7 +311,7 @@ di.defineMetaReader(CustomMetaReader);
 We inject all dependencies and return ready to use component.
 
 ```javascript
-var x = di.resolve(IFoo);
+let x = di.resolve(IFoo);
 ```
 
 ### `3.2` Create inherited classes
@@ -315,8 +319,8 @@ var x = di.resolve(IFoo);
 The inherited class accepts empty constructor, in this case we will pass the resolved components to the base class.
 
 ```javascript
-var FooWrapper = di.wrapType(IFoo);
-var foo = new FooWrapper();
+let FooWrapper = di.wrapType(IFoo);
+let foo = new FooWrapper();
 ```
 
 ### `3.3` Create function delegates
@@ -324,7 +328,7 @@ var foo = new FooWrapper();
 Define function argument identifiers, and you can call the function without arguments.
 
 ```javascript
-var myFunction = di.wrapFunction(IFoo, IBar, (foo, bar) => {});
+let myFunction = di.wrapFunction(IFoo, IBar, (foo, bar) => {});
 myFunction();
 ```
 
@@ -346,9 +350,9 @@ di
     .withParams(null, true)
 ```
 
-> :one: Passing null values says the di library to resolve values from container by declared Type
+> 1️⃣ Passing null values says the di library to resolve values from container by declared Type
 
-> :two: Boolean `true` from sample just shows the idea of passing values. You may want to get the value from app configuration or some other source.  
+> 2️⃣ Boolean `true` from sample just shows the idea of passing values. You may want to get the value from app configuration or some other source.
 
 ### `4.2` Configurate arguments
 
@@ -361,7 +365,66 @@ With options `"ignore" "extend" "override"` you can control how we handle the th
 
 
 
-:checkered_flag:
+# `5` How do we use the library?
+
+We rarely use all of those registration and configuration features.
+
+1. All the `Services`, `Workers`, `Handlers`, `Factories` - actually everything except `Data Models` - we use mostly as singletons. Means any initialization of an Instance we do via `di.resolve`. Note, that no configuration or registration is required - when nothing specified di initializes the class as-is.
+
+> We do this, while a class can `memoize` initialization, data, configuration, or method calls.
+
+```ts
+import { UserService } from './UserService'
+// ....
+let service = di.resolve(UserService);
+```
+
+2. To have more clear dependency tree structure, we define some dependencies via constructor as default parameters:
+
+```ts
+import { UserService } from './UserService'
+// ....
+class Foo {
+    constructor (
+        private service = di.resolve(UserService)
+    )
+}
+```
+
+
+2. For multiple implementations we use abstract classes.
+
+```ts
+abstract class AFoo {
+    abstract log ()
+    // ... some common logic
+}
+
+// Option 1. Register the implementation as a default for the base (AFoo)
+@di.for(AFoo)
+class SomeFoo extends AFoo () {}
+
+// Option 2. Without the decorator, the type could be registered later somewhere in code:
+di.registerType(AFoo).for(AFoo)
+
+
+//# Usage 1
+class UserService {
+    constructor (
+        foo = di.resolve(AFoo)
+    ) {}
+}
+
+//# Usage 2
+class UserService {
+    constructor (
+        @di.inject(AFoo) foo: AFoo
+    ){}
+}
+```
+
+
+🏁
 
 ----
-:copyright: MIT - 2017 Atma.js Project
+©️ MIT — 2021 Atma.js Project

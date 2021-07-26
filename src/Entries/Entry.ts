@@ -35,9 +35,9 @@ export abstract class Entry {
         this._using.push(...args);
 
 
-        var resolvers = new Array(args.length),
-            imax = args.length,
-            i = -1;
+        let resolvers = new Array(args.length);
+        let imax = args.length;
+        let i = -1;
         while (++i < imax) {
             resolvers[i] = ParamResolver.create(this.di, args[i]);
         }
@@ -50,6 +50,9 @@ export abstract class Entry {
         return this;
     }
 
+    for(...args): this {
+        return this.as(...args);
+    }
     as(...args): this {
         this._as.push(...args);
         var i = args.length, entries = this.di.entries;

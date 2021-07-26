@@ -35,7 +35,7 @@ UTest({
 
     'should inject all dependencies into a method'() {
         var fn = di
-            .Function(assert.await(function (foo, bar) {
+            .Factory(assert.await(function (foo, bar) {
                 is_(foo, Foo);
                 is_(bar, Bar);
                 is_(bar.foo, Foo);
@@ -45,11 +45,11 @@ UTest({
 
         fn();
     },
-    
+
     'should override arguments'() {
         var one = {}, two = {};
         var fn = di
-            .Function(assert.await(function (foo, bar) {
+            .Factory(assert.await(function (foo, bar) {
                 eq_(foo, one);
                 eq_(bar, two)
             }))

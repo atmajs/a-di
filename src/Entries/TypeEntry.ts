@@ -7,12 +7,9 @@ type TSingletonKey = null | string | any[];
 
 export class TypeEntry<T = any> extends BaseMethodEntry {
 
-    Type: IType<T>
+    public Type: IType<T>
 
-    private _singleton: T = null
-    private _singletons = new Map<string, T>()
     private _holder = new SingletonsHolder<T>();
-
 
     constructor(di: Di, Type: IType<T>) {
         super(di, Type);
@@ -43,20 +40,10 @@ export class TypeEntry<T = any> extends BaseMethodEntry {
                         singletonArgs.push(params[i]);
                     }
                 }
-                //-paramsKey = Args.getKey(singletonArgs);
                 paramsKey = this._holder.createKey(singletonArgs);
             } else if (args.length > 0) {
-                //-paramsKey = Args.getKey(args);
                 paramsKey = this._holder.createKey(args);
             }
-
-            // if (paramsKey) {
-            //     if (this._singletons.has(paramsKey)) {
-            //         return this._singletons.get(paramsKey);
-            //     }
-            // } else if (this._singleton) {
-            //     return this._singleton;
-            // }
 
             let singleton = this._holder.getByKey(paramsKey);
             if (singleton != null) {
@@ -64,16 +51,8 @@ export class TypeEntry<T = any> extends BaseMethodEntry {
             }
         }
 
-
-
-        //new (Function.prototype.bind.apply(Ctor, [null].concat(params)))();
         const instance = new Ctor(...params) as any as T;
         if (this.cfg_singleton === true) {
-            // if (paramsKey != null) {
-            //     this._singletons.set(paramsKey, instance);
-            // } else {
-            //     this._singleton = instance;
-            // }
             this._holder.saveByKey(paramsKey, instance);
         }
         return instance;

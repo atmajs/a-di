@@ -3,16 +3,19 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseMethodEntry = void 0;
 var Entry_1 = require("./Entry");
 var const_1 = require("../const");
 var TypeMeta_1 = require("../TypeMeta");
@@ -38,15 +41,15 @@ var BaseMethodEntry = /** @class */ (function (_super) {
         return this;
     };
     BaseMethodEntry.prototype.getParams_ = function () {
+        var _a;
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        var _a, _b;
         var Entry = this.Entry();
         var resolvers = this._resolvers;
         var params = this._params;
-        var meta = (_a = this._meta, (_a !== null && _a !== void 0 ? _a : (this._meta = TypeMeta_1.TypeMeta.prepairMeta(Entry))));
+        var meta = (_a = this._meta) !== null && _a !== void 0 ? _a : (this._meta = TypeMeta_1.TypeMeta.prepairMeta(Entry));
         var argsIgnore = this.cfg_arguments === const_1.Opts.args.IGNORE;
         var argsExtend = this.cfg_arguments === const_1.Opts.args.EXTEND;
         var argsOverride = this.cfg_arguments === const_1.Opts.args.OVERRIDE;
@@ -82,7 +85,7 @@ var BaseMethodEntry = /** @class */ (function (_super) {
             }
             if (arg == null && i < meta.params.length && meta.params[i] != null) {
                 var paramMeta = meta.params[i];
-                if ((_b = paramMeta) === null || _b === void 0 ? void 0 : _b.Type) {
+                if (paramMeta === null || paramMeta === void 0 ? void 0 : paramMeta.Type) {
                     arg = this.di.resolve(paramMeta.Type);
                 }
             }

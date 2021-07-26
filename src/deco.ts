@@ -1,3 +1,4 @@
+import { Di } from './Di';
 import { IType } from './Entries/IType';
 import { TypeMeta } from './TypeMeta';
 
@@ -9,8 +10,8 @@ interface IConstructorParam {
 }
 
 export function deco_param (opts: IConstructorParam)
-export function deco_param (Type: IType)
-export function deco_param (mix) {
+export function deco_param (Type: IType | any)
+export function deco_param (mix: any) {
     let opts: IConstructorParam;
     if (mix == null) {
         opts = {};
@@ -23,5 +24,15 @@ export function deco_param (mix) {
     }
     return function (target, propertyKey, index) {
         TypeMeta.defineParam(target, opts, index);
+    };
+}
+
+export function deco_for (Type: IType | any)
+export function deco_for (mix: any) {
+    let di = this as Di;
+
+    return function (target) {
+        di.registerType(target).as(mix);
+        return target;
     };
 }

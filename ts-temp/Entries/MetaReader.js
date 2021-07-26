@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MetaReader = void 0;
 var MetaReader = /** @class */ (function () {
     function MetaReader() {
     }

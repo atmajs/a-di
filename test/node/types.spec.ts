@@ -66,7 +66,7 @@ UTest({
         },
         'should inject dependencies into a method'() {
             var fn = di
-                .Function(assert.await(function (foo, bar) {
+                .Factory(assert.await(function (foo, bar) {
                     is_(foo, Foo);
                     is_(bar, Bar);
                     is_(bar.foo, Foo);

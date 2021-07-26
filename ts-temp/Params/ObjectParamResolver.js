@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ObjectParamResolver = void 0;
 var is_1 = require("../utils/is");
 var ObjectParamResolver = /** @class */ (function () {
     function ObjectParamResolver(di, object) {

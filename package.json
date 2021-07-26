@@ -1,6 +1,6 @@
 {
     "name": "a-di",
-    "version": "1.0.20",
+    "version": "1.0.21",
     "description": "Dependency injection library for Javascript/Typescript",
     "main": "lib/di.js",
     "directories": {
@@ -15,7 +15,7 @@
         "-server": "atma server",
         "dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
         "release": "echo \"Run atma pub -m \"message\"\"",
-        "typedoc": "typedoc"
+        "typedoc": "typedoc --tsconfig ./tsconfig-typedoc.json"
     },
     "repository": {
         "type": "git",

@@ -3,31 +3,30 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Args = exports.TypeEntry = void 0;
 var BaseMethodEntry_1 = require("./BaseMethodEntry");
 var TypeMeta_1 = require("../TypeMeta");
 var TypeEntry = /** @class */ (function (_super) {
     __extends(TypeEntry, _super);
     function TypeEntry(di, Type) {
         var _this = _super.call(this, di, Type) || this;
-        _this._singleton = null;
-        _this._singletons = new Map();
         _this._holder = new SingletonsHolder();
         _this.Type = Type;
         return _this;
@@ -36,11 +35,11 @@ var TypeEntry = /** @class */ (function (_super) {
         return this.Type;
     };
     TypeEntry.prototype.resolve = function () {
+        var _a;
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        var _a;
         var Ctor = this.Type;
         if (this._meta == null) {
             this._meta = TypeMeta_1.TypeMeta.prepairMeta(Ctor);
@@ -56,33 +55,18 @@ var TypeEntry = /** @class */ (function (_super) {
                         singletonArgs.push(params[i]);
                     }
                 }
-                //-paramsKey = Args.getKey(singletonArgs);
                 paramsKey = this._holder.createKey(singletonArgs);
             }
             else if (args.length > 0) {
-                //-paramsKey = Args.getKey(args);
                 paramsKey = this._holder.createKey(args);
             }
-            // if (paramsKey) {
-            //     if (this._singletons.has(paramsKey)) {
-            //         return this._singletons.get(paramsKey);
-            //     }
-            // } else if (this._singleton) {
-            //     return this._singleton;
-            // }
             var singleton = this._holder.getByKey(paramsKey);
             if (singleton != null) {
                 return singleton;
             }
         }
-        //new (Function.prototype.bind.apply(Ctor, [null].concat(params)))();
-        var instance = new (Ctor.bind.apply(Ctor, __spreadArrays([void 0], params)))();
+        var instance = new (Ctor.bind.apply(Ctor, __spreadArray([void 0], params)))();
         if (this.cfg_singleton === true) {
-            // if (paramsKey != null) {
-            //     this._singletons.set(paramsKey, instance);
-            // } else {
-            //     this._singleton = instance;
-            // }
             this._holder.saveByKey(paramsKey, instance);
         }
         return instance;
@@ -193,7 +177,7 @@ var SingletonsHolder = /** @class */ (function () {
         var arr;
         var isComplex = false;
         for (var i = 0; i < args.length; i++) {
-            var val = (_a = args[i], (_a !== null && _a !== void 0 ? _a : ''));
+            var val = (_a = args[i]) !== null && _a !== void 0 ? _a : '';
             if (isComplex) {
                 arr.push(val);
                 continue;
@@ -248,8 +232,7 @@ var ToKey;
     }
     function fromArray(arr, level) {
         if (level === void 0) { level = 0; }
-        var _a;
-        if (level > MAX_DEEP || ((_a = arr) === null || _a === void 0 ? void 0 : _a.length) > MAX_ARR_LENGTH) {
+        if (level > MAX_DEEP || (arr === null || arr === void 0 ? void 0 : arr.length) > MAX_ARR_LENGTH) {
             return null;
         }
         if (arr.length === 0) {

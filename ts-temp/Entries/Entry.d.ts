@@ -15,6 +15,7 @@ export declare abstract class Entry {
     config(key: 'singleton', value: boolean | 'arguments'): any;
     using(...args: any[]): this;
     isSingleton(val?: boolean): this;
+    for(...args: any[]): this;
     as(...args: any[]): this;
     register(): this;
     asSelf(): this;

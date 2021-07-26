@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EntryCollection = void 0;
 var TypeEntry_1 = require("./TypeEntry");
 var EntryCollection = /** @class */ (function () {
     function EntryCollection(di) {
