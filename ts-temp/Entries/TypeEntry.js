@@ -173,10 +173,18 @@ var SingletonsHolder = /** @class */ (function () {
         if (args == null || args.length === 0) {
             return null;
         }
+        var argsLength = args.length;
+        for (var i = argsLength - 1; i >= 0; i--) {
+            // ignore tail arguments when provided as nulls
+            if (args[i] != null) {
+                break;
+            }
+            argsLength = i;
+        }
         var key;
         var arr;
         var isComplex = false;
-        for (var i = 0; i < args.length; i++) {
+        for (var i = 0; i < argsLength; i++) {
             var val = (_a = args[i]) !== null && _a !== void 0 ? _a : '';
             if (isComplex) {
                 arr.push(val);

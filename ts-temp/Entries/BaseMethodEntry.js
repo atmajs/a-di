@@ -60,12 +60,20 @@ var BaseMethodEntry = /** @class */ (function (_super) {
         if (size < Entry.length) {
             size = Entry.length;
         }
+        var argsLength = args.length;
+        for (var i_1 = argsLength - 1; i_1 >= 0; i_1--) {
+            // ignore tail arguments when provided as nulls
+            if (args[i_1] != null) {
+                break;
+            }
+            argsLength = i_1;
+        }
         if (argsIgnore === false) {
             if (argsExtend) {
-                size += args.length;
+                size += argsLength;
             }
-            if (argsOverride && args.length > size) {
-                size = args.length;
+            if (argsOverride && argsLength > size) {
+                size = argsLength;
             }
         }
         var ctorParams = new Array(size);
@@ -73,12 +81,12 @@ var BaseMethodEntry = /** @class */ (function (_super) {
         while (++i < size) {
             var arg = null;
             if (i < params.length && params[i] != null) {
-                arg = argsIgnore === false && i < args.length && args[i] != null
+                arg = argsIgnore === false && i < argsLength && args[i] != null
                     ? args[i]
                     : params[i];
             }
             if (arg == null && i < resolvers.length && resolvers[i] != null) {
-                var currentArg = argsIgnore === false && i < args.length
+                var currentArg = argsIgnore === false && i < argsLength
                     ? args[i]
                     : void 0;
                 arg = resolvers[i].resolve(currentArg);
@@ -96,12 +104,12 @@ var BaseMethodEntry = /** @class */ (function (_super) {
             if (argsIgnore) {
                 continue;
             }
-            if (argsOverride && i < args.length) {
+            if (argsOverride && i < argsLength) {
                 ctorParams[i] = args[i];
                 continue;
             }
-            if (argsExtend && i >= size - args.length) {
-                var j = i - size - args.length;
+            if (argsExtend && i >= size - argsLength) {
+                var j = i - size - argsLength;
                 ctorParams[i] = args[j];
                 continue;
             }

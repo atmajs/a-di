@@ -155,12 +155,20 @@ class SingletonsHolder<T> {
         if (args == null || args.length === 0) {
             return null;
         }
+        let argsLength = args.length;
+        for (let i = argsLength - 1; i >= 0; i--) {
+            // ignore tail arguments when provided as nulls
+            if (args[i] != null) {
+                break;
+            }
+            argsLength = i;
+        }
 
         let key: string;
         let arr: any[];
         let isComplex = false;
 
-        for (let i = 0; i < args.length; i++) {
+        for (let i = 0; i < argsLength; i++) {
             let val = args[i] ?? '';
             if (isComplex) {
                 arr.push(val);

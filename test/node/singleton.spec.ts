@@ -71,6 +71,14 @@ UTest({
         eq_(f1, f2);
         let f3 = di.resolve(Foo, [1, 'foo', 3]);
         notEq_(f1, f3);
+    },
+    'singleton by none and undefined params' () {
+        class Foo {
+            constructor (public opts) {}
+        }
+        let f1 = di.resolve(Foo);
+        let f2 = di.resolve(Foo, null);
+        eq_(f1, f2);
     }
 
 })
