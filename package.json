@@ -1,8 +1,15 @@
 {
     "name": "a-di",
-    "version": "1.0.25",
+    "version": "1.0.26",
     "description": "Dependency injection library for Javascript/Typescript",
-    "main": "lib/di.js",
+    "main": "lib/umd/di.js",
+    "types": "./lib/di.d.ts",
+    "exports": {
+        ".": {
+            "import": "./lib/esm/alot.js",
+            "require": "./lib/umd/alot.js"
+        }
+    },
     "directories": {
         "test": "test"
     },
@@ -34,41 +41,68 @@
     },
     "homepage": "https://github.com/tenbits/di#readme",
     "devDependencies": {
+        "@types/jquery": "^3.5.6",
         "@types/node": "^13.7.1",
         "@types/sinon": "^9.0.0",
-        "@types/jquery": "^3.5.6",
-        "app-bundler": "0.0.82",
-        "atma": "^0.12.33",
+        "app-bundler": "^0.2.6",
+        "atma": "^0.15.22",
         "atma-io": "^1.2.29",
-        "atma-loader-ts": "^1.1.15",
+        "atma-loader-ts": "^1.2.4",
+        "dts-bundle": "^0.7.3",
         "maskjs": "^0.57.2",
+        "shellbee": "^0.5.29",
         "sinon": "^9.0.1",
         "typedoc": "^0.21.4"
     },
     "app-bundler": {
-        "file": "src/exports.ts",
-        "outputMain": "lib/di.js",
-        "package": {
-            "module": "commonjs",
-            "moduleName": "di",
-            "moduleWrapper": "custom",
-            "moduleWrapperCustomPath": "./src/umd.js",
-            "commonjs": {
-                "output": "simplified"
+        "apps": {
+            "umd": {
+                "outputMain": "lib/umd/di.js",
+                "package": {
+                    "module": "commonjs",
+                    "moduleName": "di",
+                    "moduleWrapper": "umd",
+                    "commonjs": {
+                        "output": "simplified"
+                    }
+                }
+            },
+            "esm": {
+                "outputMain": "lib/esm/di.mjs",
+                "package": {
+                    "module": "commonjs",
+                    "moduleWrapper": "esm",
+                    "commonjs": {
+                        "output": "simplified"
+                    }
+                }
             }
         },
-        "extensions": {
-            "io": {
-                "type": "js"
+        "common": {
+            "file": "src/exports.ts",
+            "extensions": {
+                "io": {
+                    "type": "js"
+                }
+            },
+            "defaultExtensions": {
+                "js": "ts"
+            },
+            "middlewares": {
+                "ts": [
+                    "atma-loader-ts:read"
+                ]
+            },
+            "settings": {
+                "atma-loader-ts": {
+                    "typescript": {
+                        "compilerOptions": {
+                            "module": "CommonJS",
+                            "target": "ES2015"
+                        }
+                    }
+                }
             }
-        },
-        "defaultExtensions": {
-            "js": "ts"
-        },
-        "middlewares": {
-            "ts": [
-                "atma-loader-ts:read"
-            ]
         }
     },
     "atma": {

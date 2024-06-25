@@ -2,5 +2,6 @@ src/
 assets/
 tools/
 test/
+ts-temp/
 tsconfig-build.json
 .travis.yml
