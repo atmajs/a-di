@@ -14,7 +14,7 @@ module.exports = {
         },
         'node': {
             exec: 'node',
-            tests: 'test/node/**',
+            tests: 'test/node/**.spec.ts',
         },
         'mask': {
             exec: 'dom',
