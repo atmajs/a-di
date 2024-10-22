@@ -1,12 +1,12 @@
 {
     "name": "a-di",
-    "version": "1.0.28",
+    "version": "1.0.29",
     "description": "Dependency injection library for Javascript/Typescript",
     "main": "lib/umd/di.js",
     "types": "./lib/di.d.ts",
     "exports": {
         ".": {
-            "import": "./lib/esm/di.js",
+            "import": "./lib/esm/di.mjs",
             "require": "./lib/umd/di.js"
         }
     },
